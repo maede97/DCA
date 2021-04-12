@@ -10,6 +10,7 @@
 #ifndef __DCA_H__
 #define __DCA_H__
 
+#include "newton.h"
 #include "pair.h"
 #include "primitives.h"
 #include "utils.h"

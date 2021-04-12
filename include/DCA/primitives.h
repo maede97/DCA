@@ -40,9 +40,8 @@ public:
 
         Vector3d g = v / v_norm;
 
-        dDdP.resize(6);
+        dDdP.resize(3);
         dDdP.head(3) = g;
-        dDdP.tail(3) = -g;
     }
 
     virtual void compute_d2DdP2(MatrixXd &d2DdP2,
@@ -54,15 +53,8 @@ public:
             v_norm = EPSILON;
         }
 
-        Matrix3d h =
-            (Matrix3d::Identity() * v_norm - (v * v.transpose()) / v_norm) /
-            (v_norm * v_norm);
-
-        d2DdP2.resize(6, 6);
-        d2DdP2.block(0, 0, 3, 3) = h;
-        d2DdP2.block(3, 3, 3, 3) = h;
-        d2DdP2.block(0, 3, 3, 3) = -h;
-        d2DdP2.block(3, 0, 3, 3) = -h;
+        return (Matrix3d::Identity() * v_norm - (v * v.transpose()) / v_norm) /
+               (v_norm * v_norm);
     }
 
     // Sphere vs. Capsule
@@ -103,6 +95,7 @@ public:
     Vector3d getStartPosition() const { return m_startPosition; }
     Vector3d getEndPosition() const { return m_endPosition; }
     double getRadius() const { return m_radius; }
+
 private:
     Vector3d m_startPosition;
     Vector3d m_endPosition;

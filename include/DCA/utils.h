@@ -31,6 +31,8 @@ using Eigen::Matrix3d;
 // Easier access to a vector of length 3
 using Eigen::Vector3d;
 
+using Vector6d = Eigen::Matrix<double, 6, 1>;
+
 // Easier access to any dynamic matrix
 using Eigen::MatrixXd;
 
