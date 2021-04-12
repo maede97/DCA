@@ -28,6 +28,11 @@ IF(WIN32)
     set_target_properties(${PROJECT_NAME} PROPERTIES SUFFIX ".pyd")
 endif()
 
+if(${USE_COMPACT_N_SEARCH})
+  target_compile_definitions(${PROJECT_NAME} PRIVATE -DBUILD_COMPACT_N_SEARCH=1)
+else(${USE_COMPACT_N_SEARCH})
+  target_compile_definitions(${PROJECT_NAME} PRIVATE -DBUILD_COMPACT_N_SEARCH=0)
+endif(${USE_COMPACT_N_SEARCH})
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
     LIBRARY_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/PythonDCA)

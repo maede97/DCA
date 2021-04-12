@@ -63,6 +63,18 @@ PYBIND11_MODULE(PythonDCA, m) {
           "Compute the gradient between two primitives, given the indices");
 
     m.def("compute_d2DdP2", &compute_d2DdP2, "Compute the hessian.");
+
+    // Pair bindings
+    py::class_<PermutationPairGenerator>(m, "PermutationPairGenerator")
+        .def(py::init<>())
+        .def("generate", &PermutationPairGenerator::generate);
+
+#if BUILD_COMPACT_N_SEARCH == 1
+    py::class_<NeighborsPairGenerator>(m, "NeighborsPairGenerator")
+        .def(py::init<>())
+        .def(py::init<const double&>())
+        .def("generate", &NeighborsPairGenerator::generate);
+#endif
 }
 
 }  // namespace DCA

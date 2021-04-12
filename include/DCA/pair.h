@@ -43,6 +43,7 @@ public:
  */
 class PermutationPairGenerator : public PairGenerator {
 public:
+    PermutationPairGenerator() {}
     virtual std::vector<pair_t> generate(
         const std::vector<primitive_t> &primitives) const override {
         // Create all possible permutations.
@@ -64,6 +65,7 @@ public:
 #if DCA_BUILD_COMPACT_N_SEARCH
 class NeighborsPairGenerator : public PairGenerator {
 public:
+    NeighborsPairGenerator() : m_radius(1.) {}
     NeighborsPairGenerator(const double &radius) : m_radius(radius) {}
 
     virtual std::vector<pair_t> generate(

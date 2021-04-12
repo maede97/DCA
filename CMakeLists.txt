@@ -58,7 +58,8 @@ if(${BUILD_PYTHON_BINDINGS})
 endif()
 
 if(${USE_COMPACT_N_SEARCH})
-
+  set(BUILD_SHARED_LIBS ON CACHE INTERNAL "Force shared libraries for CompactNSearch")
+  
   target_compile_definitions(${PROJECT_NAME} INTERFACE -DDCA_BUILD_COMPACT_N_SEARCH=1)
   
   # Now download CompactNSearch (from a fork)
