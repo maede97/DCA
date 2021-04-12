@@ -16,3 +16,8 @@ else(${USE_COMPACT_N_SEARCH})
   target_compile_definitions(${PROJECT_NAME} PRIVATE -DBUILD_COMPACT_N_SEARCH=0)
 
 endif(${USE_COMPACT_N_SEARCH})
+
+
+
+add_executable(min minimizer.cpp)
+target_link_libraries(min PRIVATE DCA)
