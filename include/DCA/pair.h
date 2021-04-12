@@ -14,13 +14,13 @@
 #include "primitives.h"
 #include "utils.h"
 
-#if BUILD_COMPACT_N_SEARCH
+#if DCA_BUILD_COMPACT_N_SEARCH
 
 #include <CompactNSearch>
 #include <array>
 #include <exception>
 
-#endif /* BUILD_COMPACT_N_SEARCH */
+#endif /* DCA_BUILD_COMPACT_N_SEARCH */
 
 namespace DCA {
 /**
@@ -61,7 +61,7 @@ public:
     }
 };
 
-#if BUILD_COMPACT_N_SEARCH
+#if DCA_BUILD_COMPACT_N_SEARCH
 class NeighborsPairGenerator : public PairGenerator {
 public:
     NeighborsPairGenerator(const double &radius) : m_radius(radius) {}
@@ -115,7 +115,7 @@ public:
 private:
     double m_radius;
 };
-#endif /* BUILD_COMPACT_N_SEARCH */
+#endif /* DCA_BUILD_COMPACT_N_SEARCH */
 
 }  // namespace DCA
 #endif /* __DCA_PAIR_H__ */

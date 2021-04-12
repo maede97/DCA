@@ -20,8 +20,10 @@ set(CMAKE_CXX_STANDARD 20)
 
 option(BUILD_EXAMPLES "Build examples" ON)
 option(USE_COMPACT_N_SEARCH "Build a Pair generator with the help of CompactNSearch" ON)
+option(BUILD_PYTHON_BINDINGS "Build Python Bindings" OFF)
 
 add_library(${PROJECT_NAME} INTERFACE)
+target_compile_features(${PROJECT_NAME} INTERFACE cxx_std_20)
 
 target_include_directories(
   ${PROJECT_NAME}
@@ -40,12 +42,24 @@ add_library(eigen INTERFACE)
 add_library (Eigen3::Eigen ALIAS eigen)
 target_include_directories(eigen INTERFACE ${eigen_SOURCE_DIR})
 
-target_compile_features(${PROJECT_NAME} INTERFACE cxx_std_20)
 target_link_libraries(${PROJECT_NAME} INTERFACE Eigen3::Eigen)
+
+if(${BUILD_PYTHON_BINDINGS})
+  # Fetch pybind from github
+  FetchContent_Declare(
+    pybind #
+    GIT_REPOSITORY https://github.com/pybind/pybind11
+    GIT_TAG v2.6.2 #
+  )
+  fetch(pybind)
+  add_subdirectory(${pybind_SOURCE_DIR} pybind)
+
+  add_subdirectory(python)
+endif()
 
 if(${USE_COMPACT_N_SEARCH})
 
-  target_compile_definitions(${PROJECT_NAME} INTERFACE -DBUILD_COMPACT_N_SEARCH=1)
+  target_compile_definitions(${PROJECT_NAME} INTERFACE -DDCA_BUILD_COMPACT_N_SEARCH=1)
   
   # Now download CompactNSearch (from a fork)
   FetchContent_Declare(
@@ -62,7 +76,7 @@ if(${USE_COMPACT_N_SEARCH})
 
 else(${USE_COMPACT_N_SEARCH})
 
-  target_compile_definitions(${PROJECT_NAME} INTERFACE -DBUILD_COMPACT_N_SEARCH=0)
+  target_compile_definitions(${PROJECT_NAME} INTERFACE -DDCA_BUILD_COMPACT_N_SEARCH=0)
 
 endif(${USE_COMPACT_N_SEARCH})
 
