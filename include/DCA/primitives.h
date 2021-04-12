@@ -18,6 +18,7 @@ namespace DCA {
  */
 class Sphere : public CollisionWithAll {
 public:
+    Sphere() : m_position(Vector3d(0, 0, 0)), m_radius(1.) {}
     Sphere(const Vector3d &position, const double &radius)
         : m_position(position), m_radius(radius) {}
 
@@ -81,6 +82,11 @@ private:
 
 class Capsule : public CollisionWithAll {
 public:
+    Capsule()
+        : m_startPosition(Vector3d(0, 0, 0)),
+          m_endPosition(Vector3d(1, 0, 0)),
+          m_radius(1.) {}
+          
     /**
      * A capsule is defined by two points and a radius.
      */
@@ -103,6 +109,7 @@ public:
     Vector3d getStartPosition() const { return m_startPosition; }
     Vector3d getEndPosition() const { return m_endPosition; }
     double getRadius() const { return m_radius; }
+
 private:
     Vector3d m_startPosition;
     Vector3d m_endPosition;
