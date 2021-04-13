@@ -108,7 +108,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a18baba94ec2b94956322a67b65c22c89"><td class="memItemLeft" align="right" valign="top">virtual std::vector&lt; <a class="el" href="namespaceDCA.html#aca2596492f4d1b9c1aa11f1ff4e4272a">pair_t</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDCA_1_1NeighborsPairGenerator.html#a18baba94ec2b94956322a67b65c22c89">generate</a> (const std::vector&lt; <a class="el" href="namespaceDCA.html#a004d392c0100f2b6eb1e93ca73481587">primitive_t</a> &gt; &amp;primitives) const override</td></tr>
 <tr class="separator:a18baba94ec2b94956322a67b65c22c89"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><p>This generator uses the CompactNSearch library for efficient neighbor searching. Altough the neighborhood is computed new for each call to generate, it serves as a first usefull implementation </p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="af2b371757f84ccfb0aa101997450086d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af2b371757f84ccfb0aa101997450086d">&#9670;&nbsp;</a></span>NeighborsPairGenerator()</h2>
 
@@ -132,6 +134,12 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
+<p>Construct this generator with a given radius </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">radius</td><td>The radius to search other primitives in. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -159,7 +167,15 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>This function generates the pairs given the primitives. The returned vector consists of pairs, where each pair holds two numbers: The indices of the corresponding primitives which were given. </p>
+
+<p></p>
+<p>This function generates the pairs given the primitives. The returned vector consists of pairs, where each pair holds two numbers: The indices of the corresponding primitives which were given. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">primitives</td><td>All primitives to generate the pairs from. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>A vector of pairs of indices, where each index corresponds to a primitive in the primitives vector. </dd></dl>
 
 <p>Implements <a class="el" href="classDCA_1_1PairGenerator.html#a0c47df06c321857bb20abd6c504a7506">DCA::PairGenerator</a>.</p>
 
@@ -171,7 +187,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Apr 13 2021 15:02:11 for DCA by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1
+Generated on Tue Apr 13 2021 15:16:28 for DCA by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1
 </small></address>
 </body>
 </html>

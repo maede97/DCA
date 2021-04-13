@@ -126,10 +126,10 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad0812cfd74d242096282af5e23508537"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDCA_1_1Sphere.html#ad0812cfd74d242096282af5e23508537">getRadius</a> () const</td></tr>
 <tr class="separator:ad0812cfd74d242096282af5e23508537"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classDCA_1_1CollisionWith"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classDCA_1_1CollisionWith')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classDCA_1_1CollisionWith.html">DCA::CollisionWith&lt; Capsule &gt;</a></td></tr>
-<tr class="memitem:afc5e77260c31df705f71b8a82160d7e7 inherit pub_methods_classDCA_1_1CollisionWith"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDCA_1_1CollisionWith.html#afc5e77260c31df705f71b8a82160d7e7">compute_dDdP</a> (VectorXd &amp;dDdP, const <a class="el" href="classDCA_1_1Capsule.html">Capsule</a> &amp;other) const</td></tr>
-<tr class="separator:afc5e77260c31df705f71b8a82160d7e7 inherit pub_methods_classDCA_1_1CollisionWith"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9baf64b42d8a4c89fc8e26d311aa484d inherit pub_methods_classDCA_1_1CollisionWith"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDCA_1_1CollisionWith.html#a9baf64b42d8a4c89fc8e26d311aa484d">compute_d2DdP2</a> (MatrixXd &amp;d2DdP2, const <a class="el" href="classDCA_1_1Capsule.html">Capsule</a> &amp;other) const</td></tr>
-<tr class="separator:a9baf64b42d8a4c89fc8e26d311aa484d inherit pub_methods_classDCA_1_1CollisionWith"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac1a5ef3f7ccbd2bc4d465d0195fd5fa5 inherit pub_methods_classDCA_1_1CollisionWith"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDCA_1_1CollisionWith.html#ac1a5ef3f7ccbd2bc4d465d0195fd5fa5">compute_dDdP</a> (VectorXd &amp;dDdP, const <a class="el" href="classDCA_1_1Capsule.html">Capsule</a> &amp;other) const=0</td></tr>
+<tr class="separator:ac1a5ef3f7ccbd2bc4d465d0195fd5fa5 inherit pub_methods_classDCA_1_1CollisionWith"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe37c1ccab888b0e73625e43fa16a3e4 inherit pub_methods_classDCA_1_1CollisionWith"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDCA_1_1CollisionWith.html#afe37c1ccab888b0e73625e43fa16a3e4">compute_d2DdP2</a> (MatrixXd &amp;d2DdP2, const <a class="el" href="classDCA_1_1Capsule.html">Capsule</a> &amp;other) const=0</td></tr>
+<tr class="separator:afe37c1ccab888b0e73625e43fa16a3e4 inherit pub_methods_classDCA_1_1CollisionWith"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Shape Primitive: <a class="el" href="classDCA_1_1Sphere.html">Sphere</a> </p>
@@ -194,12 +194,13 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Compute the distance to another object. This function must be implemented by any primitive. </p><dl class="params"><dt>Parameters</dt><dd>
+<p>Compute the distance to another object. </p><dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">other</td><td>The other primitive to check against. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">other</td><td>The other primitive to check against. </td></tr>
   </table>
   </dd>
 </dl>
+<dl class="section return"><dt>Returns</dt><dd>The distance to the other object. </dd></dl>
 
 <p>Implements <a class="el" href="classDCA_1_1CollisionWith.html#ae64623c27ac6dd733a383af1536394af">DCA::CollisionWith&lt; Capsule &gt;</a>.</p>
 
@@ -267,9 +268,15 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Compute the second derivative (hessian) of the distance function to the other object. If this function is not overridden for the different types, it will fall back to finite differences. </p>
+<p>Compute the second derivative (hessian) of the distance function to the other object. The hessian is taken with respect to this object, with the other being non-movable. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">d2DdP2</td><td>The hessian of the distance function. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">other</td><td>The other primitive to check against. </td></tr>
+  </table>
+  </dd>
+</dl>
 
-<p>Reimplemented from <a class="el" href="classDCA_1_1CollisionWith.html#a9baf64b42d8a4c89fc8e26d311aa484d">DCA::CollisionWith&lt; Sphere &gt;</a>.</p>
+<p>Implements <a class="el" href="classDCA_1_1CollisionWith.html#afe37c1ccab888b0e73625e43fa16a3e4">DCA::CollisionWith&lt; Sphere &gt;</a>.</p>
 
 </div>
 </div>
@@ -324,9 +331,15 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Compute the first derivative (gradient) of the distance function to the other object. If this function is not overridden for the different types, it will fall back to finite differences. </p>
+<p>Compute the first derivative (gradient) of the distance function to the other object. The gradient is taken with respect to this object, with the other being non-movable. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">dDdP</td><td>The gradient of the distance function. </td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">other</td><td>The other primitive to check against. </td></tr>
+  </table>
+  </dd>
+</dl>
 
-<p>Reimplemented from <a class="el" href="classDCA_1_1CollisionWith.html#afc5e77260c31df705f71b8a82160d7e7">DCA::CollisionWith&lt; Sphere &gt;</a>.</p>
+<p>Implements <a class="el" href="classDCA_1_1CollisionWith.html#ac1a5ef3f7ccbd2bc4d465d0195fd5fa5">DCA::CollisionWith&lt; Sphere &gt;</a>.</p>
 
 </div>
 </div>
@@ -404,7 +417,7 @@ Public Member Functions</h2></td></tr>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Apr 13 2021 15:02:11 for DCA by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1
+Generated on Tue Apr 13 2021 15:16:28 for DCA by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1
 </small></address>
 </body>
 </html>

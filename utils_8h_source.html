@@ -119,11 +119,11 @@ $(function() {
 <div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160; </div>
 <div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;<span class="comment">// Helper for std::visit</span></div>
 <div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span>... Ts&gt;</div>
-<div class="line"><a name="l00050"></a><span class="lineno"><a class="line" href="structDCA_1_1overloaded.html">   50</a></span>&#160;<span class="keyword">struct </span><a class="code" href="structDCA_1_1overloaded.html">overloaded</a> : Ts... {</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;<span class="keyword">struct </span>overloaded : Ts... {</div>
 <div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keyword">using</span> Ts::operator()...;</div>
 <div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;};</div>
 <div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">class</span>... Ts&gt;</div>
-<div class="line"><a name="l00054"></a><span class="lineno"><a class="line" href="namespaceDCA.html#aef8cbae58c7acdb9e2e5f65632c2fb8f">   54</a></span>&#160;<a class="code" href="namespaceDCA.html#aef8cbae58c7acdb9e2e5f65632c2fb8f">overloaded</a>(Ts...) -&gt; <a class="code" href="structDCA_1_1overloaded.html">overloaded</a>&lt;Ts...&gt;;</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;overloaded(Ts...) -&gt; overloaded&lt;Ts...&gt;;</div>
 <div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160; </div>
 <div class="line"><a name="l00057"></a><span class="lineno"><a class="line" href="utils_8h.html#a002b2f4894492820fe708b1b7e7c5e70">   57</a></span>&#160;<span class="preprocessor">#define EPSILON 1e-8</span></div>
@@ -140,45 +140,35 @@ $(function() {
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;<span class="preprocessor">        return CollisionWith&lt;OTHER_T&gt;::compute_d2DdP2(d2DdP2, other);   \</span></div>
 <div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;<span class="preprocessor">    }</span></div>
 <div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a name="l00092"></a><span class="lineno"><a class="line" href="classDCA_1_1CollisionWith.html">   92</a></span>&#160;<span class="keyword">class </span><a class="code" href="classDCA_1_1CollisionWith.html">CollisionWith</a> {</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;<span class="keyword">public</span>:</div>
-<div class="line"><a name="l00099"></a><span class="lineno"><a class="line" href="classDCA_1_1CollisionWith.html#ae64623c27ac6dd733a383af1536394af">   99</a></span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">double</span> <a class="code" href="classDCA_1_1CollisionWith.html#ae64623c27ac6dd733a383af1536394af">compute_D</a>(<span class="keyword">const</span> T &amp;other) <span class="keyword">const</span> = 0;</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160; </div>
-<div class="line"><a name="l00107"></a><span class="lineno"><a class="line" href="classDCA_1_1CollisionWith.html#afc5e77260c31df705f71b8a82160d7e7">  107</a></span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classDCA_1_1CollisionWith.html#afc5e77260c31df705f71b8a82160d7e7">compute_dDdP</a>(VectorXd &amp;dDdP, <span class="keyword">const</span> T &amp;other)<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00108"></a><span class="lineno">  108</span>&#160;        <span class="comment">// finite diff</span></div>
-<div class="line"><a name="l00109"></a><span class="lineno">  109</span>&#160;        dDdP.resize(1);</div>
-<div class="line"><a name="l00110"></a><span class="lineno">  110</span>&#160;        dDdP(0) = -1;  <span class="comment">// for now</span></div>
-<div class="line"><a name="l00111"></a><span class="lineno">  111</span>&#160;    }</div>
-<div class="line"><a name="l00112"></a><span class="lineno">  112</span>&#160; </div>
-<div class="line"><a name="l00119"></a><span class="lineno"><a class="line" href="classDCA_1_1CollisionWith.html#a9baf64b42d8a4c89fc8e26d311aa484d">  119</a></span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classDCA_1_1CollisionWith.html#a9baf64b42d8a4c89fc8e26d311aa484d">compute_d2DdP2</a>(MatrixXd &amp;d2DdP2, <span class="keyword">const</span> T &amp;other)<span class="keyword"> const </span>{</div>
-<div class="line"><a name="l00120"></a><span class="lineno">  120</span>&#160;        <span class="comment">// finite diff</span></div>
-<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;        d2DdP2.resize(1, 1);</div>
-<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160;        d2DdP2(0, 0) = -1;  <span class="comment">// for now</span></div>
-<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;    }</div>
-<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160;};</div>
-<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160; </div>
-<div class="line"><a name="l00130"></a><span class="lineno"><a class="line" href="classDCA_1_1CollisionWithAll.html">  130</a></span>&#160;<span class="keyword">class </span><a class="code" href="classDCA_1_1CollisionWithAll.html">CollisionWithAll</a> : <span class="keyword">public</span> <a class="code" href="classDCA_1_1CollisionWith.html">CollisionWith</a>&lt;Sphere&gt;,</div>
-<div class="line"><a name="l00131"></a><span class="lineno">  131</span>&#160;                         <span class="keyword">public</span> <a class="code" href="classDCA_1_1CollisionWith.html">CollisionWith</a>&lt;Capsule&gt; {};</div>
-<div class="line"><a name="l00132"></a><span class="lineno">  132</span>&#160; </div>
-<div class="line"><a name="l00133"></a><span class="lineno">  133</span>&#160;}  <span class="comment">// namespace DCA</span></div>
-<div class="line"><a name="l00134"></a><span class="lineno">  134</span>&#160; </div>
-<div class="line"><a name="l00135"></a><span class="lineno">  135</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* __DCA_UTILS_H__ */</span><span class="preprocessor"></span></div>
-<div class="ttc" id="aclassDCA_1_1CollisionWithAll_html"><div class="ttname"><a href="classDCA_1_1CollisionWithAll.html">DCA::CollisionWithAll</a></div><div class="ttdef"><b>Definition:</b> utils.h:131</div></div>
-<div class="ttc" id="aclassDCA_1_1CollisionWith_html"><div class="ttname"><a href="classDCA_1_1CollisionWith.html">DCA::CollisionWith</a></div><div class="ttdef"><b>Definition:</b> utils.h:92</div></div>
-<div class="ttc" id="aclassDCA_1_1CollisionWith_html_a9baf64b42d8a4c89fc8e26d311aa484d"><div class="ttname"><a href="classDCA_1_1CollisionWith.html#a9baf64b42d8a4c89fc8e26d311aa484d">DCA::CollisionWith::compute_d2DdP2</a></div><div class="ttdeci">virtual void compute_d2DdP2(MatrixXd &amp;d2DdP2, const T &amp;other) const</div><div class="ttdef"><b>Definition:</b> utils.h:119</div></div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a name="l00085"></a><span class="lineno"><a class="line" href="classDCA_1_1CollisionWith.html">   85</a></span>&#160;<span class="keyword">class </span><a class="code" href="classDCA_1_1CollisionWith.html">CollisionWith</a> {</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;<span class="keyword">public</span>:</div>
+<div class="line"><a name="l00092"></a><span class="lineno"><a class="line" href="classDCA_1_1CollisionWith.html#ae64623c27ac6dd733a383af1536394af">   92</a></span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">double</span> <a class="code" href="classDCA_1_1CollisionWith.html#ae64623c27ac6dd733a383af1536394af">compute_D</a>(<span class="keyword">const</span> T &amp;other) <span class="keyword">const</span> = 0;</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160; </div>
+<div class="line"><a name="l00102"></a><span class="lineno"><a class="line" href="classDCA_1_1CollisionWith.html#ac1a5ef3f7ccbd2bc4d465d0195fd5fa5">  102</a></span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classDCA_1_1CollisionWith.html#ac1a5ef3f7ccbd2bc4d465d0195fd5fa5">compute_dDdP</a>(VectorXd &amp;dDdP, <span class="keyword">const</span> T &amp;other) <span class="keyword">const</span> = 0;</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160; </div>
+<div class="line"><a name="l00112"></a><span class="lineno"><a class="line" href="classDCA_1_1CollisionWith.html#afe37c1ccab888b0e73625e43fa16a3e4">  112</a></span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> <a class="code" href="classDCA_1_1CollisionWith.html#afe37c1ccab888b0e73625e43fa16a3e4">compute_d2DdP2</a>(MatrixXd &amp;d2DdP2, <span class="keyword">const</span> T &amp;other) <span class="keyword">const</span> = 0;</div>
+<div class="line"><a name="l00113"></a><span class="lineno">  113</span>&#160;};</div>
+<div class="line"><a name="l00114"></a><span class="lineno">  114</span>&#160; </div>
+<div class="line"><a name="l00120"></a><span class="lineno"><a class="line" href="classDCA_1_1CollisionWithAll.html">  120</a></span>&#160;<span class="keyword">class </span><a class="code" href="classDCA_1_1CollisionWithAll.html">CollisionWithAll</a> : <span class="keyword">public</span> <a class="code" href="classDCA_1_1CollisionWith.html">CollisionWith</a>&lt;Sphere&gt;,</div>
+<div class="line"><a name="l00121"></a><span class="lineno">  121</span>&#160;                         <span class="keyword">public</span> <a class="code" href="classDCA_1_1CollisionWith.html">CollisionWith</a>&lt;Capsule&gt; {};</div>
+<div class="line"><a name="l00122"></a><span class="lineno">  122</span>&#160; </div>
+<div class="line"><a name="l00123"></a><span class="lineno">  123</span>&#160;}  <span class="comment">// namespace DCA</span></div>
+<div class="line"><a name="l00124"></a><span class="lineno">  124</span>&#160; </div>
+<div class="line"><a name="l00125"></a><span class="lineno">  125</span>&#160;<span class="preprocessor">#endif </span><span class="comment">/* __DCA_UTILS_H__ */</span><span class="preprocessor"></span></div>
+<div class="ttc" id="aclassDCA_1_1CollisionWithAll_html"><div class="ttname"><a href="classDCA_1_1CollisionWithAll.html">DCA::CollisionWithAll</a></div><div class="ttdef"><b>Definition:</b> utils.h:121</div></div>
+<div class="ttc" id="aclassDCA_1_1CollisionWith_html"><div class="ttname"><a href="classDCA_1_1CollisionWith.html">DCA::CollisionWith</a></div><div class="ttdef"><b>Definition:</b> utils.h:85</div></div>
+<div class="ttc" id="aclassDCA_1_1CollisionWith_html_ac1a5ef3f7ccbd2bc4d465d0195fd5fa5"><div class="ttname"><a href="classDCA_1_1CollisionWith.html#ac1a5ef3f7ccbd2bc4d465d0195fd5fa5">DCA::CollisionWith::compute_dDdP</a></div><div class="ttdeci">virtual void compute_dDdP(VectorXd &amp;dDdP, const T &amp;other) const =0</div></div>
 <div class="ttc" id="aclassDCA_1_1CollisionWith_html_ae64623c27ac6dd733a383af1536394af"><div class="ttname"><a href="classDCA_1_1CollisionWith.html#ae64623c27ac6dd733a383af1536394af">DCA::CollisionWith::compute_D</a></div><div class="ttdeci">virtual double compute_D(const T &amp;other) const =0</div></div>
-<div class="ttc" id="aclassDCA_1_1CollisionWith_html_afc5e77260c31df705f71b8a82160d7e7"><div class="ttname"><a href="classDCA_1_1CollisionWith.html#afc5e77260c31df705f71b8a82160d7e7">DCA::CollisionWith::compute_dDdP</a></div><div class="ttdeci">virtual void compute_dDdP(VectorXd &amp;dDdP, const T &amp;other) const</div><div class="ttdef"><b>Definition:</b> utils.h:107</div></div>
+<div class="ttc" id="aclassDCA_1_1CollisionWith_html_afe37c1ccab888b0e73625e43fa16a3e4"><div class="ttname"><a href="classDCA_1_1CollisionWith.html#afe37c1ccab888b0e73625e43fa16a3e4">DCA::CollisionWith::compute_d2DdP2</a></div><div class="ttdeci">virtual void compute_d2DdP2(MatrixXd &amp;d2DdP2, const T &amp;other) const =0</div></div>
 <div class="ttc" id="anamespaceDCA_html"><div class="ttname"><a href="namespaceDCA.html">DCA</a></div><div class="ttdef"><b>Definition:</b> pair.h:25</div></div>
 <div class="ttc" id="anamespaceDCA_html_a004d392c0100f2b6eb1e93ca73481587"><div class="ttname"><a href="namespaceDCA.html#a004d392c0100f2b6eb1e93ca73481587">DCA::primitive_t</a></div><div class="ttdeci">std::variant&lt; Sphere, Capsule &gt; primitive_t</div><div class="ttdef"><b>Definition:</b> utils.h:26</div></div>
 <div class="ttc" id="anamespaceDCA_html_aca2596492f4d1b9c1aa11f1ff4e4272a"><div class="ttname"><a href="namespaceDCA.html#aca2596492f4d1b9c1aa11f1ff4e4272a">DCA::pair_t</a></div><div class="ttdeci">std::pair&lt; size_t, size_t &gt; pair_t</div><div class="ttdef"><b>Definition:</b> utils.h:44</div></div>
 <div class="ttc" id="anamespaceDCA_html_ad698ca01120b2e35a25e1bc236e4b3dc"><div class="ttname"><a href="namespaceDCA.html#ad698ca01120b2e35a25e1bc236e4b3dc">DCA::SparseMatrixd</a></div><div class="ttdeci">Eigen::SparseMatrix&lt; double &gt; SparseMatrixd</div><div class="ttdef"><b>Definition:</b> utils.h:41</div></div>
-<div class="ttc" id="anamespaceDCA_html_aef8cbae58c7acdb9e2e5f65632c2fb8f"><div class="ttname"><a href="namespaceDCA.html#aef8cbae58c7acdb9e2e5f65632c2fb8f">DCA::overloaded</a></div><div class="ttdeci">overloaded(Ts...) -&gt; overloaded&lt; Ts... &gt;</div></div>
-<div class="ttc" id="astructDCA_1_1overloaded_html"><div class="ttname"><a href="structDCA_1_1overloaded.html">DCA::overloaded</a></div><div class="ttdef"><b>Definition:</b> utils.h:50</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Apr 13 2021 15:02:11 for DCA by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1
+Generated on Tue Apr 13 2021 15:16:28 for DCA by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1
 </small></address>
 </body>
 </html>
