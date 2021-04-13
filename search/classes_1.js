@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['overloaded_34',['overloaded',['../structDCA_1_1overloaded.html',1,'DCA']]]
+  ['neighborspairgenerator_35',['NeighborsPairGenerator',['../classDCA_1_1NeighborsPairGenerator.html',1,'DCA']]]
 ];

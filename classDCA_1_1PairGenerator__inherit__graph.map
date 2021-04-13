@@ -1,4 +1,5 @@
 <map id="DCA::PairGenerator" name="DCA::PairGenerator">
-<area shape="rect" id="node1" title=" " alt="" coords="41,5,175,32"/>
-<area shape="rect" id="node2" href="$classDCA_1_1PermutationPairGenerator.html" title=" " alt="" coords="5,80,211,107"/>
+<area shape="rect" id="node1" title=" " alt="" coords="147,5,282,32"/>
+<area shape="rect" id="node2" href="$classDCA_1_1NeighborsPairGenerator.html" title=" " alt="" coords="5,80,200,107"/>
+<area shape="rect" id="node3" href="$classDCA_1_1PermutationPairGenerator.html" title=" " alt="" coords="224,80,429,107"/>
 </map>

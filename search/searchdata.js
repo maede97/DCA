@@ -1,10 +1,10 @@
 var indexSectionsWithContent =
 {
-  0: "cdegoprsu",
-  1: "cops",
+  0: "cdegnoprsu",
+  1: "cnops",
   2: "d",
   3: "dpru",
-  4: "cgos",
+  4: "cgnos",
   5: "ps",
   6: "ce"
 };

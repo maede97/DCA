@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['overloaded_55',['overloaded',['../namespaceDCA.html#aef8cbae58c7acdb9e2e5f65632c2fb8f',1,'DCA']]]
+  ['neighborspairgenerator_57',['NeighborsPairGenerator',['../classDCA_1_1NeighborsPairGenerator.html#af2b371757f84ccfb0aa101997450086d',1,'DCA::NeighborsPairGenerator']]]
 ];

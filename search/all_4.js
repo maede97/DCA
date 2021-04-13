@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['overloaded_18',['overloaded',['../structDCA_1_1overloaded.html',1,'DCA::overloaded&lt; Ts &gt;'],['../namespaceDCA.html#aef8cbae58c7acdb9e2e5f65632c2fb8f',1,'DCA::overloaded(Ts...) -&gt; overloaded&lt; Ts... &gt;']]]
+  ['neighborspairgenerator_18',['NeighborsPairGenerator',['../classDCA_1_1NeighborsPairGenerator.html',1,'DCA::NeighborsPairGenerator'],['../classDCA_1_1NeighborsPairGenerator.html#af2b371757f84ccfb0aa101997450086d',1,'DCA::NeighborsPairGenerator::NeighborsPairGenerator()']]]
 ];

@@ -98,7 +98,12 @@ class DCA::CollisionWith&lt; T &gt;</h3>
 
 <p>This class is the base class for all primitives. Each class must override the distance computation (compute_D), with respect to ALL other primitives.</p>
 <p>The derivatives can be calculated using finite difference, by calling <a class="el" href="utils_8h.html#a1eac288578131d788df3cd2828fe7acc">compute_dDdP_FD(OTHER_T)</a> with OTHER_T being the type of the other primitive.</p>
-<p>The same applies to the hessian. </p>
+<p>The same applies to the hessian. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">T</td><td>One of <a class="el" href="classDCA_1_1Sphere.html">Sphere</a> or <a class="el" href="classDCA_1_1Capsule.html">Capsule</a> </td></tr>
+  </table>
+  </dd>
+</dl>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="ae64623c27ac6dd733a383af1536394af"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae64623c27ac6dd733a383af1536394af">&#9670;&nbsp;</a></span>compute_D()</h2>
@@ -125,7 +130,12 @@ template&lt;typename T &gt; </div>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Compute the distance to another object. This function must be implemented by any primitive. </p>
+<p>Compute the distance to another object. This function must be implemented by any primitive. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">other</td><td>The other primitive to check against. </td></tr>
+  </table>
+  </dd>
+</dl>
 
 <p>Implemented in <a class="el" href="classDCA_1_1Sphere.html#a4000431f519647c6383624aecf81be5b">DCA::Sphere</a>, <a class="el" href="classDCA_1_1Capsule.html#abf830f846455f2adc898197d099af4d5">DCA::Capsule</a>, <a class="el" href="classDCA_1_1Capsule.html#a6ca5b14fb71f41a5dab64bf6ca3427b4">DCA::Capsule</a>, and <a class="el" href="classDCA_1_1Sphere.html#a7340cf228bd357a4d4de0709a1d72c7f">DCA::Sphere</a>.</p>
 
@@ -219,7 +229,7 @@ template&lt;typename T &gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Apr 13 2021 14:54:11 for DCA by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1
+Generated on Tue Apr 13 2021 15:02:11 for DCA by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1
 </small></address>
 </body>
 </html>
