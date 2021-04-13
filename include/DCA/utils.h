@@ -1,7 +1,7 @@
 /**
  * This file holds utils used all over this library.
  * 
- * @author: Matthias Busenhart, Simon Zimmermann, Simon Huber, Stelian Coros
+ * @author Matthias Busenhart, Simon Zimmermann, Simon Huber, Stelian Coros
  * CRL Group, ETH Zurich, crl.ethz.ch
  * (c) 2021
  */
@@ -39,15 +39,22 @@ using Eigen::MatrixXd;
 // Easier access to any dynamic vector
 using Eigen::VectorXd;
 
+// Easier access to a sparse matrix
 using SparseMatrixd = Eigen::SparseMatrix<double>;
 
 // Easier access to a pair (corresponding of two indices)
 using pair_t = std::pair<size_t, size_t>;
 
-// Helper for std::visit
-template<class... Ts> struct overloaded : Ts... { using Ts::operator()...; };
-template<class... Ts> overloaded(Ts...) -> overloaded<Ts...>;
+#ifndef DOXYGEN_SHOULD_SKIP_THIS
 
+// Helper for std::visit
+template <class... Ts>
+struct overloaded : Ts... {
+    using Ts::operator()...;
+};
+template <class... Ts>
+overloaded(Ts...) -> overloaded<Ts...>;
+#endif
 
 #define EPSILON 1e-8
 
@@ -73,52 +80,52 @@ template<class... Ts> overloaded(Ts...) -> overloaded<Ts...>;
 
 /**
  * This class is the base class for all primitives.
- * Each class must override the distance computation (compute_D),
  * with respect to ALL other primitives.
- * 
- * The derivatives can be calculated using finite difference,
- * by calling compute_dDdP_FD(OTHER_T) with OTHER_T
- * being the type of the other primitive.
- * 
- * The same applies to the hessian.
+ * @param T One of Sphere or Capsule
  */
 template <typename T>
 class CollisionWith {
 public:
     /**
      * Compute the distance to another object.
-     * This function must be implemented by any primitive.
+     * @param[in] other The other primitive to check against.
+     * @return The distance to the other object.
      */
     virtual double compute_D(const T &other) const = 0;
 
     /**
      * Compute the first derivative (gradient)
      * of the distance function to the other object.
-     * If this function is not overridden for the different types,
-     * it will fall back to finite differences. 
+     * The gradient is taken with respect to this object,
+     * with the other being non-movable.
+     * @param[out] dDdP The gradient of the distance function.
+     * @param[in] other The other primitive to check against.
      */
     virtual void compute_dDdP(VectorXd &dDdP, const T &other) const {
-        // finite diff
-        dDdP.resize(1);
-        dDdP(0) = -1;  // for now
+        /**
+         * @todo
+         */
     }
 
     /**
      * Compute the second derivative (hessian)
      * of the distance function to the other object.
-     * If this function is not overridden for the different types,
-     * it will fall back to finite differences.
+     * The hessian is taken with respect to this object,
+     * with the other being non-movable.
+     * @param[out] d2DdP2 The hessian of the distance function.
+     * @param[in] other The other primitive to check against.
      */
     virtual void compute_d2DdP2(MatrixXd &d2DdP2, const T &other) const {
-        // finite diff
-        d2DdP2.resize(1, 1);
-        d2DdP2(0, 0) = -1;  // for now
+        /**
+         * @todo
+         */
     }
 };
 
 /**
  * This helper class lets you create a new shape
  * without specifying all other types to collide with.
+ * You only have to inherit from this class and you are set.
  */
 class CollisionWithAll : public CollisionWith<Sphere>,
                          public CollisionWith<Capsule> {};

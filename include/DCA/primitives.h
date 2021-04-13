@@ -1,7 +1,7 @@
 /**
  * This file holds the implementation for each shape primitive.
  * 
- * @author: Matthias Busenhart, Simon Zimmermann, Simon Huber, Stelian Coros
+ * @author Matthias Busenhart, Simon Zimmermann, Simon Huber, Stelian Coros
  * CRL Group, ETH Zurich, crl.ethz.ch
  * (c) 2021
  */
@@ -41,7 +41,7 @@ public:
         Vector3d g = v / v_norm;
 
         dDdP.resize(3);
-        dDdP.head(3) = g;
+        dDdP = g;
     }
 
     virtual void compute_d2DdP2(MatrixXd &d2DdP2,
@@ -53,8 +53,12 @@ public:
             v_norm = EPSILON;
         }
 
-        return (Matrix3d::Identity() * v_norm - (v * v.transpose()) / v_norm) /
-               (v_norm * v_norm);
+        Matrix3d h =
+            (Matrix3d::Identity() * v_norm - (v * v.transpose()) / v_norm) /
+            (v_norm * v_norm);
+
+        d2DdP2.resize(3, 3);
+        d2DdP2 = h;
     }
 
     // Sphere vs. Capsule
