@@ -40,9 +40,8 @@ public:
 
         Vector3d g = v / v_norm;
 
-        dDdP.resize(6);
-        dDdP.head(3) = g;
-        dDdP.tail(3) = -g;
+        dDdP.resize(3);
+        dDdP = g;
     }
 
     virtual void compute_d2DdP2(MatrixXd &d2DdP2,
@@ -58,11 +57,8 @@ public:
             (Matrix3d::Identity() * v_norm - (v * v.transpose()) / v_norm) /
             (v_norm * v_norm);
 
-        d2DdP2.resize(6, 6);
-        d2DdP2.block(0, 0, 3, 3) = h;
-        d2DdP2.block(3, 3, 3, 3) = h;
-        d2DdP2.block(0, 3, 3, 3) = -h;
-        d2DdP2.block(3, 0, 3, 3) = -h;
+        d2DdP2.resize(3, 3);
+        d2DdP2 = h;
     }
 
     // Sphere vs. Capsule
