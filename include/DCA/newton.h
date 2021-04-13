@@ -2,26 +2,18 @@
 #define __DCA_NEWTON_H__
 
 #include <cmath>  // for std::isfinite
-#include <eigen3/Eigen/SparseLU>
+#include <Eigen/Dense>
 #include <iostream>
+
 #include "utils.h"
 
 namespace DCA {
 
-class Objective {
-public:
-    virtual double evaluate(const VectorXd& x) const = 0;
-    virtual VectorXd gradient(const VectorXd& x) const = 0;
-    virtual SparseMatrixd hessian(const VectorXd& x) const = 0;
-
-    virtual void preOptimizationStep(const VectorXd& x) {}
-    virtual void postOptimizationStep(const VectorXd& x) {}
-    virtual void postLineSearchStep(const VectorXd& x) {}
-
-public:
-    double weight;
-};
-
+/**
+ * @todo: 
+ * don't store class members, but
+ * rather give by reference/value
+ */
 class NewtonOptimizer {
 public:
     NewtonOptimizer(double solverResidual = 1e-5,
@@ -31,19 +23,20 @@ public:
 
     ~NewtonOptimizer() {}
 
-    bool optimize(Objective* objective, VectorXd& x,
+    // also add P vector here
+    bool optimize(Objective& objective, const VectorXd& P, VectorXd& x,
                   unsigned int maxIterations = 100) {
         m_x_tmp = x;
         bool betterSolutionFound = false;
         bool converged = false;
 
         for (int i = 0; i < maxIterations; i++) {
-            objective->preOptimizationStep(m_x_tmp);
+            objective.preOptimizationStep(P, m_x_tmp);
 
-            computeSearchDirection(objective);
-            betterSolutionFound = doLineSearch(objective);
+            computeSearchDirection(P, objective);
+            betterSolutionFound = doLineSearch(P, objective);
 
-            objective->postOptimizationStep(m_x_tmp);
+            objective.postOptimizationStep(P, m_x_tmp);
 
             if (m_gradient.norm() < m_solverResidual) {
                 converged = true;
@@ -56,16 +49,16 @@ public:
     }
 
 private:
-    void computeSearchDirection(Objective* objective) {
-        m_gradient = objective->gradient(m_x_tmp);
-        m_hessian = objective->hessian(m_x_tmp);
+    void computeSearchDirection(const VectorXd& P, Objective& objective) {
+        objective.compute_dOdX(m_gradient, P, m_x_tmp);
+        objective.compute_d2OdX2(m_hessian, P, m_x_tmp);
 
         solveLinearSystem(m_searchDir, m_hessian, m_gradient);
 
         if (m_useDynamicRegularization)
             applyDynamicRegularization(m_searchDir, m_hessian, m_gradient);
     }
-    bool doLineSearch(Objective* objective) {
+    bool doLineSearch(const VectorXd& P, Objective& objective) {
         if (m_maxLineSearchIterations < 1) {
             m_x_tmp = m_x_tmp - m_searchDir * m_lineSearchStartValue;
             return true;
@@ -73,14 +66,12 @@ private:
 
         double alpha = m_lineSearchStartValue;
         VectorXd xc(m_x_tmp);
-        double initialObjectiveValue = objective->evaluate(xc);
+        double initialObjectiveValue = objective.compute_O(P, xc);
 
         for (int j = 0; j < m_maxLineSearchIterations; j++) {
-            std::cout << m_x_tmp.size() << std::endl;
-            std::cout << m_searchDir.size() << std::endl;
             m_x_tmp = xc - m_searchDir * alpha;
-            objective->postLineSearchStep(m_x_tmp);
-            m_objectiveValue = objective->evaluate(m_x_tmp);
+            objective.postLineSearchStep(P, m_x_tmp);
+            m_objectiveValue = objective.compute_O(P, m_x_tmp);
 
             if (!std::isfinite(m_objectiveValue))
                 m_objectiveValue = initialObjectiveValue + 1.;
@@ -93,13 +84,12 @@ private:
         return false;
     }
 
-    static void solveLinearSystem(VectorXd& y, const SparseMatrixd& A,
+    static void solveLinearSystem(VectorXd& y, const MatrixXd& A,
                                   const VectorXd& b) {
-        Eigen::SimplicialLDLT<SparseMatrixd, Eigen::Lower> solver;
-        solver.compute(A);
-        y = solver.solve(b);
+        y = A.colPivHouseholderQr().solve(b);
     }
-    static void applyDynamicRegularization(VectorXd& y, SparseMatrixd& A,
+
+    static void applyDynamicRegularization(VectorXd& y, MatrixXd& A,
                                            const VectorXd& x) {
         double dotProduct = y.dot(x);
         if (dotProduct <= 0. && x.squaredNorm() > 0) {
@@ -128,7 +118,7 @@ private:
 
     double m_objectiveValue;
     VectorXd m_x_tmp, m_searchDir, m_gradient;
-    SparseMatrixd m_hessian;
+    MatrixXd m_hessian;
 };
 
 }  // namespace DCA

@@ -17,7 +17,6 @@ else(${USE_COMPACT_N_SEARCH})
 
 endif(${USE_COMPACT_N_SEARCH})
 
-
-
-add_executable(min minimizer.cpp)
-target_link_libraries(min PRIVATE DCA)
+# Add example for newton minizer
+add_executable(minimizer minimizer.cpp)
+target_link_libraries(minimizer PRIVATE DCA)

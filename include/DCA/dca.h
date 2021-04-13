@@ -10,9 +10,14 @@
 #ifndef __DCA_H__
 #define __DCA_H__
 
+// All base DCA files
 #include "newton.h"
 #include "pair.h"
 #include "primitives.h"
 #include "utils.h"
+
+// And finally implementations of the primitives:
+#include "Capsule.h"
+#include "Sphere.h"
 
 #endif /* __DCA_H__ */

@@ -10,7 +10,6 @@
 #define __DCA_UTILS_H__
 
 #include <Eigen/Core>
-#include <Eigen/Sparse>
 #include <variant>
 #include <vector>
 
@@ -19,8 +18,6 @@ namespace DCA {
 // Forward definitions
 class Sphere;
 class Capsule;
-
-// Type definitions
 
 // All possible primitves
 using primitive_t = std::variant<Sphere, Capsule>;
@@ -39,9 +36,6 @@ using Eigen::MatrixXd;
 // Easier access to any dynamic vector
 using Eigen::VectorXd;
 
-// Easier access to a sparse matrix
-using SparseMatrixd = Eigen::SparseMatrix<double>;
-
 // Easier access to a pair (corresponding of two indices)
 using pair_t = std::pair<size_t, size_t>;
 
@@ -59,39 +53,21 @@ overloaded(Ts...) -> overloaded<Ts...>;
 #define EPSILON 1e-8
 
 /**
- * This helper let's us use the fallback to finite difference
- * (for gradient computation) more easily
+ * Helper for compute_d2DdP2_other
  */
-#define compute_dDdP_FD(OTHER_T)                                    \
-    virtual void compute_dDdP(VectorXd &dDdP, const OTHER_T &other) \
-        const override {                                            \
-        return CollisionWith<OTHER_T>::compute_dDdP(dDdP, other);   \
-    }
-
-/**
- * This helper let's us use the fallback to finite difference
- * (for hessian computation) more easily
- */
-#define compute_d2DdP2_FD(OTHER_T)                                      \
-    virtual void compute_d2DdP2(MatrixXd &d2DdP2, const OTHER_T &other) \
-        const override {                                                \
-        return CollisionWith<OTHER_T>::compute_d2DdP2(d2DdP2, other);   \
-    }
 
 /**
  * This class is the base class for all primitives.
  * with respect to ALL other primitives.
- * @param T One of Sphere or Capsule
  */
-template <typename T>
-class CollisionWith {
+class PrimitiveBase {
 public:
     /**
      * Compute the distance to another object.
      * @param[in] other The other primitive to check against.
      * @return The distance to the other object.
      */
-    virtual double compute_D(const T &other) const = 0;
+    virtual double compute_D(const primitive_t& other) const = 0;
 
     /**
      * Compute the first derivative (gradient)
@@ -101,7 +77,7 @@ public:
      * @param[out] dDdP The gradient of the distance function.
      * @param[in] other The other primitive to check against.
      */
-    virtual void compute_dDdP(VectorXd &dDdP, const T &other) const {
+    virtual void compute_dDdP(VectorXd& dDdP, const primitive_t& other) const {
         /**
          * @todo
          */
@@ -115,7 +91,15 @@ public:
      * @param[out] d2DdP2 The hessian of the distance function.
      * @param[in] other The other primitive to check against.
      */
-    virtual void compute_d2DdP2(MatrixXd &d2DdP2, const T &other) const {
+    virtual void compute_d2DdP2(MatrixXd& d2DdP2,
+                                const primitive_t& other) const {
+        /**
+         * @todo
+         */
+    }
+
+    virtual void compute_d2DdP2_other(MatrixXd& d2DdP2_other,
+                                      const primitive_t& other) const {
         /**
          * @todo
          */
@@ -123,12 +107,72 @@ public:
 };
 
 /**
- * This helper class lets you create a new shape
- * without specifying all other types to collide with.
- * You only have to inherit from this class and you are set.
+ * This class represents an objective, which can be used together with the NewtonMinimizer.
  */
-class CollisionWithAll : public CollisionWith<Sphere>,
-                         public CollisionWith<Capsule> {};
+class Objective {
+public:
+    /**
+     * Computes the Objective value of this.
+     * @param P Some parameters for the objective.
+     * @param X The solving variable.
+     */
+    virtual double compute_O(const VectorXd& P, const VectorXd& X) const = 0;
+    /**
+     * Computes the derivative of the objective value with respect to X value of this.
+     * @param P Some parameters for the objective.
+     * @param X The solving variable.
+     */
+    virtual void compute_dOdX(VectorXd& dOdX, const VectorXd& P,
+                              const VectorXd& X) const = 0;
+    /**
+     * Computes the second derivative of the objective value with respect to X value of this.
+     * @param P Some parameters for the objective.
+     * @param X The solving variable.
+     */
+    virtual void compute_d2OdX2(MatrixXd& d2OdX2, const VectorXd& P,
+                                const VectorXd& X) const = 0;
+
+    virtual void preOptimizationStep(const VectorXd& P, const VectorXd& X) {}
+    virtual void postOptimizationStep(const VectorXd& P, const VectorXd& X) {}
+    virtual void postLineSearchStep(const VectorXd& P, const VectorXd& X) {}
+
+public:
+    double weight;
+};
+
+/**
+ * This class represents an objective used in Sensitivity Analysis.
+ */
+class SensitivityObjective {
+    /**
+     * Computes the distance for a given P and X.
+     * @param P Some parameters for the objective.
+     * @param X The solving variable.
+     */
+    virtual double compute_D(const VectorXd& P, const VectorXd& X) const = 0;
+
+    /**
+     * Computes the first derivative of the distance with respect to P.
+     * @param P Some parameters for the objective.
+     * @param X The solving variable.
+     */
+    virtual void compute_dDdP(VectorXd& dDdP, const VectorXd& P,
+                              const VectorXd& X) const = 0;
+    /**
+     * Computes the second derivative of the distance with respect to P.
+     * @param P Some parameters for the objective.
+     * @param X The solving variable.
+     */
+    virtual void compute_d2DdP2(MatrixXd& d2DdP2, const VectorXd& P,
+                                const VectorXd& X) const = 0;
+    /**
+     * Computes the second derivative of the distance with respect to X and P.
+     * @param P Some parameters for the objective.
+     * @param X The solving variable.
+     */
+    virtual void compute_d2DdXdP(MatrixXd& d2DdXdP, const VectorXd& P,
+                                 const VectorXd& X) const = 0;
+};
 
 }  // namespace DCA
 
