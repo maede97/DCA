@@ -87,10 +87,10 @@ $(function() {
 Public Member Functions</h2></td></tr>
 <tr class="memitem:ae64623c27ac6dd733a383af1536394af"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDCA_1_1CollisionWith.html#ae64623c27ac6dd733a383af1536394af">compute_D</a> (const T &amp;other) const =0</td></tr>
 <tr class="separator:ae64623c27ac6dd733a383af1536394af"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac1a5ef3f7ccbd2bc4d465d0195fd5fa5"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDCA_1_1CollisionWith.html#ac1a5ef3f7ccbd2bc4d465d0195fd5fa5">compute_dDdP</a> (VectorXd &amp;dDdP, const T &amp;other) const =0</td></tr>
-<tr class="separator:ac1a5ef3f7ccbd2bc4d465d0195fd5fa5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afe37c1ccab888b0e73625e43fa16a3e4"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDCA_1_1CollisionWith.html#afe37c1ccab888b0e73625e43fa16a3e4">compute_d2DdP2</a> (MatrixXd &amp;d2DdP2, const T &amp;other) const =0</td></tr>
-<tr class="separator:afe37c1ccab888b0e73625e43fa16a3e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afc5e77260c31df705f71b8a82160d7e7"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDCA_1_1CollisionWith.html#afc5e77260c31df705f71b8a82160d7e7">compute_dDdP</a> (VectorXd &amp;dDdP, const T &amp;other) const</td></tr>
+<tr class="separator:afc5e77260c31df705f71b8a82160d7e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9baf64b42d8a4c89fc8e26d311aa484d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classDCA_1_1CollisionWith.html#a9baf64b42d8a4c89fc8e26d311aa484d">compute_d2DdP2</a> (MatrixXd &amp;d2DdP2, const T &amp;other) const</td></tr>
+<tr class="separator:a9baf64b42d8a4c89fc8e26d311aa484d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;typename T&gt;<br />
@@ -140,8 +140,8 @@ template&lt;typename T &gt; </div>
 
 </div>
 </div>
-<a id="afe37c1ccab888b0e73625e43fa16a3e4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afe37c1ccab888b0e73625e43fa16a3e4">&#9670;&nbsp;</a></span>compute_d2DdP2()</h2>
+<a id="a9baf64b42d8a4c89fc8e26d311aa484d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9baf64b42d8a4c89fc8e26d311aa484d">&#9670;&nbsp;</a></span>compute_d2DdP2()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -171,7 +171,7 @@ template&lt;typename T &gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -182,13 +182,14 @@ template&lt;typename T &gt; </div>
   </table>
   </dd>
 </dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000002">Todo:</a></b></dt><dd></dd></dl>
 
-<p>Implemented in <a class="el" href="classDCA_1_1Sphere.html#a73686645b690816b4e7cf4445eb56427">DCA::Sphere</a>.</p>
+<p>Reimplemented in <a class="el" href="classDCA_1_1Sphere.html#a73686645b690816b4e7cf4445eb56427">DCA::Sphere</a>.</p>
 
 </div>
 </div>
-<a id="ac1a5ef3f7ccbd2bc4d465d0195fd5fa5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac1a5ef3f7ccbd2bc4d465d0195fd5fa5">&#9670;&nbsp;</a></span>compute_dDdP()</h2>
+<a id="afc5e77260c31df705f71b8a82160d7e7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afc5e77260c31df705f71b8a82160d7e7">&#9670;&nbsp;</a></span>compute_dDdP()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -218,7 +219,7 @@ template&lt;typename T &gt; </div>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -229,8 +230,9 @@ template&lt;typename T &gt; </div>
   </table>
   </dd>
 </dl>
+<dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Todo:</a></b></dt><dd></dd></dl>
 
-<p>Implemented in <a class="el" href="classDCA_1_1Sphere.html#a95f17733cfb4ba464b3269a3387a3d5f">DCA::Sphere</a>.</p>
+<p>Reimplemented in <a class="el" href="classDCA_1_1Sphere.html#a95f17733cfb4ba464b3269a3387a3d5f">DCA::Sphere</a>.</p>
 
 </div>
 </div>
@@ -240,7 +242,7 @@ template&lt;typename T &gt; </div>
 </div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
-Generated on Tue Apr 13 2021 15:16:28 for DCA by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1
+Generated on Tue Apr 13 2021 15:19:16 for DCA by&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.1
 </small></address>
 </body>
 </html>
