@@ -9,8 +9,9 @@
 #ifndef __DCA_CAPSULE_H__
 #define __DCA_CAPSULE_H__
 
-#include "newton.h"
-#include "primitives.h"
+#include "Newton.h"
+#include "Primitives.h"
+#include "SoftUpperLimitConstraint.h"
 
 namespace DCA {
 
@@ -21,7 +22,8 @@ namespace DCA {
  * We solve it using Newont's Method (hence the inheritance of Objective).
  * Furthermore, we provide all derivatives for Sensitivity Analysis.
  */
-class CapsuleDistanceObjective : public Objective, public SensitivityObjective {
+class CapsuleDistanceObjective : public NewtonObjective,
+                                 public SensitivityObjective {
 public:
     /**
      * @copydoc Objective::compute_O
@@ -29,17 +31,64 @@ public:
      * @param X The current point on the two lines.
      */
     double compute_O(const VectorXd& P, const VectorXd& X) const override {
-        Vector3d P12 = P.head(3) + X[0] * (P.segment(3, 3) - P.head(3));
-        Vector3d P34 = P.segment(6, 3) + X[1] * (P.tail(3) - P.segment(6, 3));
-        return (P12 - P34).norm();
+        double value = 0.0;
+
+        //--- Shortest distance
+        value += compute_D(P, X);
+
+        //--- Regularizer
+        for (int i = 0; i < maxRegularizerIndex; i++)
+            value += regularizerWeight * 0.5 * (X[i] - 0.5) * (X[i] - 0.5);
+
+        //--- Constraint
+        value += constraintWeight * sulc.compute_F(-X[0]);
+        value += constraintWeight * sulc.compute_F(X[0] - 1.0);
+        value += constraintWeight * sulc.compute_F(-X[1]);
+        value += constraintWeight * sulc.compute_F(X[1] - 1.0);
+
+        return value;
     }
+
+    void compute_dOdX(VectorXd& dOdX, const VectorXd& P,
+                      const VectorXd& X) const {
+        //--- Shortest distance
+        compute_dDdX(dOdX, P, X);
+
+        //--- Regularizer
+        for (int i = 0; i < maxRegularizerIndex; i++)
+            dOdX[i] += regularizerWeight * (X[i] - 0.5);
+
+        //--- Constraint
+        dOdX[0] -= constraintWeight * sulc.compute_dFdX(-X[0]);
+        dOdX[0] += constraintWeight * sulc.compute_dFdX(X[0] - 1.0);
+        dOdX[1] -= constraintWeight * sulc.compute_dFdX(-X[1]);
+        dOdX[1] += constraintWeight * sulc.compute_dFdX(X[1] - 1.0);
+    }
+
+    void compute_d2OdX2(MatrixXd& d2OdX2, const VectorXd& P,
+                        const VectorXd& X) const {
+        //--- Shortest distance
+        compute_d2DdX2(d2OdX2, P, X);
+        d2OdX2(1,0) = 0.;
+        
+        //--- Regularizer
+        for (int i = 0; i < maxRegularizerIndex; i++)
+            d2OdX2(i, i) += regularizerWeight;
+
+        //--- Constraint
+        d2OdX2(0, 0) += constraintWeight * sulc.compute_d2FdX2(-X[0]);
+        d2OdX2(0, 0) += constraintWeight * sulc.compute_d2FdX2(X[0] - 1.0);
+        d2OdX2(1, 1) += constraintWeight * sulc.compute_d2FdX2(-X[1]);
+        d2OdX2(1, 1) += constraintWeight * sulc.compute_d2FdX2(X[1] - 1.0);
+    }
+
     /**
-     * @copydoc Objective::compute_dOdX
+     * @copydoc Objective::compute_dDdX
      * @param P The four points, stacked.
      * @param X The current point on the two lines.
      */
-    void compute_dOdX(VectorXd& dOdX, const VectorXd& P,
-                      const VectorXd& X) const override {
+    void compute_dDdX(VectorXd& dOdX, const VectorXd& P,
+                      const VectorXd& X) const {
         Vector3d P1 = P.segment(0, 3);
         Vector3d P2 = P.segment(3, 3);
         Vector3d P3 = P.segment(6, 3);
@@ -56,11 +105,11 @@ public:
         dOdX[1] = -(P4 - P3).transpose() * (v / v_norm);
     }
     /**
-     * @copydoc Objective::compute_d2OdX2
+     * @copydoc Objective::compute_d2DdX2
      * @param P The four points, stacked.
      * @param X The current point on the two lines.
      */
-    void compute_d2OdX2(MatrixXd& d2OdX2, const VectorXd& P,
+    void compute_d2DdX2(MatrixXd& d2OdX2, const VectorXd& P,
                         const VectorXd& X) const override {
         Vector3d P1 = P.segment(0, 3);
         Vector3d P2 = P.segment(3, 3);
@@ -97,10 +146,9 @@ public:
      * @param X The current point on the two lines.
      */
     double compute_D(const VectorXd& P, const VectorXd& X) const override {
-        /**
-         * @todo: Is this the one with regularizers? And then, what about getGradient
-         */
-        return compute_O(P, X);
+        Vector3d P12 = P.head(3) + X[0] * (P.segment(3, 3) - P.head(3));
+        Vector3d P34 = P.segment(6, 3) + X[1] * (P.tail(3) - P.segment(6, 3));
+        return (P12 - P34).norm();
     }
 
     /**
@@ -240,6 +288,13 @@ public:
             setEntries(d2DdXdP, du, dv, du_p, dv_p, 1, 3);
         }
     }
+
+private:
+    double regularizerWeight = 0.1;
+    double constraintWeight = 10.0;
+    // 2: Both are regularized / 1: only one is regularized
+    int maxRegularizerIndex = 2;
+    SoftUpperLimitConstraint sulc = SoftUpperLimitConstraint(0.0, 1.0, 0.001);
 };
 
 #ifndef DOXYGEN_SHOULD_SKIP_THIS

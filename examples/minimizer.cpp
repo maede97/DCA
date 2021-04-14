@@ -6,7 +6,7 @@
  * (c) 2021
  */
 
-#include "DCA/dca.h"
+#include "DCA/DCA.h"
 
 using namespace DCA;
 
@@ -21,7 +21,7 @@ int main(int argc, char const* argv[]) {
 
     Eigen::VectorXd P_vector;
     P_vector.resize(12);
-    P_vector << 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 2;
+    P_vector << Vector3d(0,0,0), Vector3d(1, 0, 0), Vector3d(0, 1, 0), Vector3d(1, 2, 0);
 
     minimizer.optimize(f, P_vector, x, 100);
     std::cout << x << std::endl;

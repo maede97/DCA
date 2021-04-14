@@ -9,7 +9,7 @@
 #ifndef __DCA_SPHERE_H__
 #define __DCA_SPHERE_H__
 
-#include "primitives.h"
+#include "Primitives.h"
 
 namespace DCA {
 

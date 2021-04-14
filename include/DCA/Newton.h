@@ -5,9 +5,44 @@
 #include <Eigen/Dense>
 #include <iostream>
 
-#include "utils.h"
+#include "Utils.h"
 
 namespace DCA {
+
+
+/**
+ * This class represents an objective, which can be used together with the NewtonMinimizer.
+ */
+class NewtonObjective {
+public:
+    /**
+     * Computes the Objective value of this.
+     * @param P Some parameters for the objective.
+     * @param X The solving variable.
+     */
+    virtual double compute_O(const VectorXd& P, const VectorXd& X) const = 0;
+    /**
+     * Computes the derivative of the objective value with respect to X value of this.
+     * @param P Some parameters for the objective.
+     * @param X The solving variable.
+     */
+    virtual void compute_dOdX(VectorXd& dOdX, const VectorXd& P,
+                              const VectorXd& X) const = 0;
+    /**
+     * Computes the second derivative of the objective value with respect to X value of this.
+     * @param P Some parameters for the objective.
+     * @param X The solving variable.
+     */
+    virtual void compute_d2OdX2(MatrixXd& d2OdX2, const VectorXd& P,
+                                const VectorXd& X) const = 0;
+
+    virtual void preOptimizationStep(const VectorXd& P, const VectorXd& X) {}
+    virtual void postOptimizationStep(const VectorXd& P, const VectorXd& X) {}
+    virtual void postLineSearchStep(const VectorXd& P, const VectorXd& X) {}
+
+public:
+    double weight;
+};
 
 /**
  * @todo: 
@@ -24,7 +59,7 @@ public:
     ~NewtonOptimizer() {}
 
     // also add P vector here
-    bool optimize(Objective& objective, const VectorXd& P, VectorXd& x,
+    bool optimize(NewtonObjective& objective, const VectorXd& P, VectorXd& x,
                   unsigned int maxIterations = 100) {
         m_x_tmp = x;
         bool betterSolutionFound = false;
@@ -49,7 +84,7 @@ public:
     }
 
 private:
-    void computeSearchDirection(const VectorXd& P, Objective& objective) {
+    void computeSearchDirection(const VectorXd& P, NewtonObjective& objective) {
         objective.compute_dOdX(m_gradient, P, m_x_tmp);
         objective.compute_d2OdX2(m_hessian, P, m_x_tmp);
 
@@ -58,7 +93,7 @@ private:
         if (m_useDynamicRegularization)
             applyDynamicRegularization(m_searchDir, m_hessian, m_gradient);
     }
-    bool doLineSearch(const VectorXd& P, Objective& objective) {
+    bool doLineSearch(const VectorXd& P, NewtonObjective& objective) {
         if (m_maxLineSearchIterations < 1) {
             m_x_tmp = m_x_tmp - m_searchDir * m_lineSearchStartValue;
             return true;

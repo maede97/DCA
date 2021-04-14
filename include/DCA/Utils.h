@@ -107,40 +107,6 @@ public:
 };
 
 /**
- * This class represents an objective, which can be used together with the NewtonMinimizer.
- */
-class Objective {
-public:
-    /**
-     * Computes the Objective value of this.
-     * @param P Some parameters for the objective.
-     * @param X The solving variable.
-     */
-    virtual double compute_O(const VectorXd& P, const VectorXd& X) const = 0;
-    /**
-     * Computes the derivative of the objective value with respect to X value of this.
-     * @param P Some parameters for the objective.
-     * @param X The solving variable.
-     */
-    virtual void compute_dOdX(VectorXd& dOdX, const VectorXd& P,
-                              const VectorXd& X) const = 0;
-    /**
-     * Computes the second derivative of the objective value with respect to X value of this.
-     * @param P Some parameters for the objective.
-     * @param X The solving variable.
-     */
-    virtual void compute_d2OdX2(MatrixXd& d2OdX2, const VectorXd& P,
-                                const VectorXd& X) const = 0;
-
-    virtual void preOptimizationStep(const VectorXd& P, const VectorXd& X) {}
-    virtual void postOptimizationStep(const VectorXd& P, const VectorXd& X) {}
-    virtual void postLineSearchStep(const VectorXd& P, const VectorXd& X) {}
-
-public:
-    double weight;
-};
-
-/**
  * This class represents an objective used in Sensitivity Analysis.
  */
 class SensitivityObjective {
@@ -150,6 +116,12 @@ class SensitivityObjective {
      * @param X The solving variable.
      */
     virtual double compute_D(const VectorXd& P, const VectorXd& X) const = 0;
+
+    virtual void compute_dDdX(VectorXd& dDdX, const VectorXd& P,
+                              const VectorXd& X) const = 0;
+
+    virtual void compute_d2DdX2(MatrixXd& d2DdX2, const VectorXd& P,
+                                const VectorXd& X) const = 0;
 
     /**
      * Computes the first derivative of the distance with respect to P.

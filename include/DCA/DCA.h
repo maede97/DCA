@@ -11,10 +11,10 @@
 #define __DCA_H__
 
 // All base DCA files
-#include "newton.h"
-#include "pair.h"
-#include "primitives.h"
-#include "utils.h"
+#include "Newton.h"
+#include "Pair.h"
+#include "Primitives.h"
+#include "Utils.h"
 
 // And finally implementations of the primitives:
 #include "Capsule.h"

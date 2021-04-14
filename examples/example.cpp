@@ -9,7 +9,7 @@
 #include <iostream>  // for std::cout and std::endl
 
 // After linking the library, it can be included with the following line:
-#include "DCA/dca.h"
+#include "DCA/DCA.h"
 
 int main(int argc, char const* argv[]) {
     using namespace DCA;

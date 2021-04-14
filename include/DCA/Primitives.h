@@ -9,7 +9,7 @@
 #ifndef __DCA_PRIMITIVES_H__
 #define __DCA_PRIMITIVES_H__
 
-#include "utils.h"
+#include "Utils.h"
 
 namespace DCA {
 

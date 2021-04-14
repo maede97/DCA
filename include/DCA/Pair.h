@@ -11,8 +11,8 @@
 #ifndef __DCA_PAIR_H__
 #define __DCA_PAIR_H__
 
-#include "primitives.h"
-#include "utils.h"
+#include "Primitives.h"
+#include "Utils.h"
 
 #if BUILD_COMPACT_N_SEARCH
 
