@@ -58,7 +58,6 @@ public:
 
     ~NewtonOptimizer() {}
 
-    // also add P vector here
     bool optimize(NewtonObjective& objective, const VectorXd& P, VectorXd& x,
                   unsigned int maxIterations = 100) {
         m_x_tmp = x;

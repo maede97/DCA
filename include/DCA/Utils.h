@@ -28,6 +28,7 @@ using Eigen::Matrix3d;
 // Easier access to a vector of length 3
 using Eigen::Vector3d;
 
+// Easier access to a vector of length 6
 using Vector6d = Eigen::Matrix<double, 6, 1>;
 
 // Easier access to any dynamic matrix
@@ -50,6 +51,16 @@ template <class... Ts>
 overloaded(Ts...) -> overloaded<Ts...>;
 #endif
 
+/**
+ * Simple helper to compute the sigmoid (with a scale and a shift)
+ * @param x The value to take the sigmoid from.
+ * @param scale The scale which is in the expontent.
+ * @param shift The shift to apply to x before taking the sigmoid.
+ */
+inline double sigmoid(double x, double scale, double shift = 0.5) {
+    return 1.0 / (1.0 + std::exp(-1.0 * scale * (x - shift)));
+}
+
 #define EPSILON 1e-8
 
 /**
@@ -66,6 +77,7 @@ public:
      * Compute the distance to another object.
      * @param[in] other The other primitive to check against.
      * @return The distance to the other object.
+     * @attention The primitive positions have to be in world coordinates!
      */
     virtual double compute_D(const primitive_t& other) const = 0;
 
@@ -76,6 +88,7 @@ public:
      * with the other being non-movable.
      * @param[out] dDdP The gradient of the distance function.
      * @param[in] other The other primitive to check against.
+     * @attention The primitive positions have to be in world coordinates!
      */
     virtual void compute_dDdP(VectorXd& dDdP, const primitive_t& other) const {
         /**
@@ -90,6 +103,7 @@ public:
      * with the other being non-movable.
      * @param[out] d2DdP2 The hessian of the distance function.
      * @param[in] other The other primitive to check against.
+     * @attention The primitive positions have to be in world coordinates!
      */
     virtual void compute_d2DdP2(MatrixXd& d2DdP2,
                                 const primitive_t& other) const {
@@ -98,6 +112,12 @@ public:
          */
     }
 
+    /**
+     * Compute the second derivative of the distance with respect to the others parameters.
+     * @param[out] d2DdP2_other The hessian of the distance function (with respect to the other primitive)
+     * @param[in] other The other primitive to check against.
+     * @attention The primitive positions have to be in world coordinates!
+     */
     virtual void compute_d2DdP2_other(MatrixXd& d2DdP2_other,
                                       const primitive_t& other) const {
         /**
@@ -117,9 +137,19 @@ class SensitivityObjective {
      */
     virtual double compute_D(const VectorXd& P, const VectorXd& X) const = 0;
 
+    /**
+     * Computes the first derivative of the distance with respect to X.
+     * @param P Some parameters for the objective.
+     * @param X The solving variable.
+     */
     virtual void compute_dDdX(VectorXd& dDdX, const VectorXd& P,
                               const VectorXd& X) const = 0;
 
+    /**
+     * Computes the second derivative of the distance with respect to X.
+     * @param P Some parameters for the objective.
+     * @param X The solving variable.
+     */
     virtual void compute_d2DdX2(MatrixXd& d2DdX2, const VectorXd& P,
                                 const VectorXd& X) const = 0;
 

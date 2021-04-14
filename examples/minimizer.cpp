@@ -23,7 +23,7 @@ int main(int argc, char const* argv[]) {
     P_vector.resize(12);
     P_vector << Vector3d(0,0,0), Vector3d(1, 0, 0), Vector3d(0, 1, 0), Vector3d(1, 2, 0);
 
-    minimizer.optimize(f, P_vector, x, 100);
+    std::cout << minimizer.optimize(f, P_vector, x, 1000) << std::endl;
     std::cout << x << std::endl;
 
     std::cout << "Distance: " << f.compute_O(P_vector, x) << std::endl;

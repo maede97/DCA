@@ -21,6 +21,8 @@ int main(int argc, char const* argv[]) {
     primitives.push_back(Sphere(Vector3d(0, 0, 0), 0.5));
     primitives.push_back(Sphere(Vector3d(0, 2, 0), 0.5));
     primitives.push_back(Capsule(Vector3d(1, 0, 0), Vector3d(2, 0, 0), 0.5));
+    primitives.push_back(
+        Capsule(Vector3d(1, 1.5, 0), Vector3d(2, 1.7, 0), 0.5));
 
     // Create all possible permutations for the given primitives
     PermutationPairGenerator ppg;
