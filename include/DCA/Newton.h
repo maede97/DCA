@@ -1,3 +1,11 @@
+/**
+ * This file holds a simple newton optimizer.
+ * 
+ * @author Matthias Busenhart, Simon Zimmermann, Simon Huber, Stelian Coros
+ * CRL Group, ETH Zurich, crl.ethz.ch
+ * (c) 2021
+ */
+
 #ifndef __DCA_NEWTON_H__
 #define __DCA_NEWTON_H__
 
@@ -58,6 +66,10 @@ public:
 
     ~NewtonOptimizer() {}
 
+    /**
+     * Optimize the objective.
+     * @return true if the solver converged, false otherwise.
+     */
     bool optimize(NewtonObjective& objective, const VectorXd& P, VectorXd& x,
                   unsigned int maxIterations = 100) {
         m_x_tmp = x;
@@ -83,6 +95,9 @@ public:
     }
 
 private:
+    /**
+     * Compute the search direction by searching for the gradient direction
+     */
     void computeSearchDirection(const VectorXd& P, NewtonObjective& objective) {
         objective.compute_dOdX(m_gradient, P, m_x_tmp);
         objective.compute_d2OdX2(m_hessian, P, m_x_tmp);
@@ -92,6 +107,10 @@ private:
         if (m_useDynamicRegularization)
             applyDynamicRegularization(m_searchDir, m_hessian, m_gradient);
     }
+
+    /**
+     * Perform line search on the objective
+     */
     bool doLineSearch(const VectorXd& P, NewtonObjective& objective) {
         if (m_maxLineSearchIterations < 1) {
             m_x_tmp = m_x_tmp - m_searchDir * m_lineSearchStartValue;
@@ -118,11 +137,17 @@ private:
         return false;
     }
 
+    /**
+     * Solve the system A * y = x for y.
+     */
     static void solveLinearSystem(VectorXd& y, const MatrixXd& A,
-                                  const VectorXd& b) {
-        y = A.colPivHouseholderQr().solve(b);
+                                  const VectorXd& x) {
+        y = A.colPivHouseholderQr().solve(x);
     }
 
+    /**
+     * Apply dynamic regularization on the linear system A * y = x
+     */
     static void applyDynamicRegularization(VectorXd& y, MatrixXd& A,
                                            const VectorXd& x) {
         double dotProduct = y.dot(x);
@@ -145,14 +170,14 @@ private:
     }
 
 private:
-    double m_solverResidual;
-    unsigned int m_maxLineSearchIterations;
-    double m_lineSearchStartValue = 1.0;
-    bool m_useDynamicRegularization = true;
+    double m_solverResidual; ///< residual of the solver
+    unsigned int m_maxLineSearchIterations; ///< how many line search steps should be done
+    double m_lineSearchStartValue = 1.0; ///< the starting value of the line search
+    bool m_useDynamicRegularization = true; ///< whether to use dynamic regularization
 
-    double m_objectiveValue;
-    VectorXd m_x_tmp, m_searchDir, m_gradient;
-    MatrixXd m_hessian;
+    double m_objectiveValue; ///< the current objective value
+    VectorXd m_x_tmp, m_searchDir, m_gradient; ///< some private members, could also be given via parameters
+    MatrixXd m_hessian; ///< and the hessian
 };
 
 }  // namespace DCA

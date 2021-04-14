@@ -1,3 +1,11 @@
+/**
+ * This file holds helpers to compute primitive distances and derivatives.
+ * 
+ * @author Matthias Busenhart, Simon Zimmermann, Simon Huber, Stelian Coros
+ * CRL Group, ETH Zurich, crl.ethz.ch
+ * (c) 2021
+ */
+
 #ifndef __DCA_HELPERS_H__
 #define __DCA_HELPERS_H__
 
