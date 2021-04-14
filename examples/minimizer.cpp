@@ -15,18 +15,18 @@ int main(int argc, char const* argv[]) {
 
     NewtonOptimizer minimizer;
 
-    Eigen::VectorXd x;
-    x.resize(2);
-    x << 0.5, 0.5;
+    Eigen::VectorXd X;
+    X.resize(2);
+    X << 0.5, 0.5;
 
     Eigen::VectorXd P_vector;
     P_vector.resize(12);
     P_vector << Vector3d(0,0,0), Vector3d(1, 0, 0), Vector3d(0, 1, 0), Vector3d(1, 2, 0);
 
-    std::cout << minimizer.optimize(f, P_vector, x, 1000) << std::endl;
-    std::cout << x << std::endl;
-
-    std::cout << "Distance: " << f.compute_O(P_vector, x) << std::endl;
+    bool converged =  minimizer.optimize(f, P_vector, X, 1000);
+    std::cout << "Solver converged: " << (converged ? "true" : "false") << std::endl;
+    std::cout << "Resulting X: " << X.transpose() << std::endl;
+    std::cout << "Distance: " << f.compute_O(P_vector, X) << std::endl;
 
     return 0;
 }
