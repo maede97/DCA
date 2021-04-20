@@ -1,3 +1,6 @@
+#ifndef __DCA_AD_POINTTOLINESEGMENT_DISTANCE_H__
+#define __DCA_AD_POINTTOLINESEGMENT_DISTANCE_H__
+
 #include <Eigen/Core>
 
 namespace PointToLineSegmentDistance_CodeGen {
@@ -1426,3 +1429,5 @@ void AD_PointToLineSegmentDistanceHessian(
 }
 
 }  // namespace PointToLineSegmentDistance_CodeGen
+
+#endif /* __DCA_AD_POINTTOLINESEGMENT_DISTANCE_H__ */
