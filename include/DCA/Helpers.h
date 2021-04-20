@@ -9,6 +9,7 @@
 #ifndef __DCA_HELPERS_H__
 #define __DCA_HELPERS_H__
 
+#include "AD_PointToLineSegmentDistance.h"
 #include "Newton.h"
 #include "SoftUpperLimitConstraint.h"
 #include "Utils.h"
@@ -453,9 +454,11 @@ public:
      */
     static void compute_dDdP(VectorXd& dDdP, const VectorXd& P) {
         dDdP.resize(9);
-        /**
-         * @todo
-         */
+
+        Eigen::Matrix<double, 9, 1> grad;
+        PointToLineSegmentDistance_CodeGen::
+            AD_PointToLineSegmentDistanceGradient(P, sigScale(), grad);
+        dDdP = grad;
     }
 
     /**
@@ -464,10 +467,11 @@ public:
      * @attention Computes the derivative with respect to the sphere AND capsule.
      */
     static void compute_d2DdP2(MatrixXd& d2DdP2, const VectorXd& P) {
-        d2DdP2.resize(9,9);
-        /**
-         * @todo
-         */
+        d2DdP2.resize(9, 9);
+        Eigen::Matrix<double, 9, 9> hess;
+        PointToLineSegmentDistance_CodeGen::
+            AD_PointToLineSegmentDistanceHessian(P, sigScale(), hess);
+        d2DdP2 = hess;
     }
 
 private:
