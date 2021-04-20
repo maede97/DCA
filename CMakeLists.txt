@@ -22,6 +22,7 @@ option(BUILD_EXAMPLES "Build examples" ON)
 option(USE_COMPACT_N_SEARCH "Build a Pair generator with the help of CompactNSearch" ON)
 
 add_library(${PROJECT_NAME} INTERFACE)
+add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 
 target_include_directories(
   ${PROJECT_NAME}

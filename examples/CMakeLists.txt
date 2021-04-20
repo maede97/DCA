@@ -5,18 +5,17 @@ project(example)
 add_executable(${PROJECT_NAME} example.cpp)
 
 # Link to DCA and make the header files accessible only to this executable.
-target_link_libraries(${PROJECT_NAME} PRIVATE DCA)
+target_link_libraries(${PROJECT_NAME} PRIVATE DCA::DCA)
 
+# The following lines are only needed if an app needs to know if CompactNSearch is built.
+# Normally, they can be neglected.
 if(${USE_COMPACT_N_SEARCH})
-
   target_compile_definitions(${PROJECT_NAME} PRIVATE -DBUILD_COMPACT_N_SEARCH=1)
-
 else(${USE_COMPACT_N_SEARCH})
-
   target_compile_definitions(${PROJECT_NAME} PRIVATE -DBUILD_COMPACT_N_SEARCH=0)
-
 endif(${USE_COMPACT_N_SEARCH})
+
 
 # Add example for newton minizer
 add_executable(minimizer minimizer.cpp)
-target_link_libraries(minimizer PRIVATE DCA)
+target_link_libraries(minimizer PRIVATE DCA::DCA)
