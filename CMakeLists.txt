@@ -28,17 +28,22 @@ target_include_directories(
   INTERFACE $<BUILD_INTERFACE:${${PROJECT_NAME}_SOURCE_DIR}/include>
             $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
-# Now download eigen3
-# download as zip, so it's a bit smaller than downloading the whole repo
-FetchContent_Declare(
-    eigen #
-    URL https://gitlab.com/libeigen/eigen/-/archive/3.3.7/eigen-3.3.7.zip #
-    URL_HASH MD5=888aab45512cc0c734b3e8f60280daba #
-)
-fetch(eigen)
-add_library(eigen INTERFACE)
-add_library (Eigen3::Eigen ALIAS eigen)
-target_include_directories(eigen INTERFACE ${eigen_SOURCE_DIR})
+# Check if eigen3 available
+find_package (Eigen3 3.3 NO_MODULE)
+
+if(TARGET Eigen3::Eigen)
+  # Now download eigen3
+  # download as zip, so it's a bit smaller than downloading the whole repo
+  FetchContent_Declare(
+      eigen #
+      URL https://gitlab.com/libeigen/eigen/-/archive/3.3.7/eigen-3.3.7.zip #
+      URL_HASH MD5=888aab45512cc0c734b3e8f60280daba #
+  )
+  fetch(eigen)
+  add_library(eigen INTERFACE)
+  add_library (Eigen3::Eigen ALIAS eigen)
+  target_include_directories(eigen INTERFACE ${eigen_SOURCE_DIR})
+endif(TARGET Eigen3::Eigen)
 
 target_compile_features(${PROJECT_NAME} INTERFACE cxx_std_20)
 target_link_libraries(${PROJECT_NAME} INTERFACE Eigen3::Eigen)
