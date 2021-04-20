@@ -31,7 +31,7 @@ target_include_directories(
 # Check if eigen3 available
 find_package (Eigen3 3.3 NO_MODULE)
 
-if(TARGET Eigen3::Eigen)
+if(NOT TARGET Eigen3::Eigen)
   # Now download eigen3
   # download as zip, so it's a bit smaller than downloading the whole repo
   FetchContent_Declare(
@@ -43,7 +43,7 @@ if(TARGET Eigen3::Eigen)
   add_library(eigen INTERFACE)
   add_library (Eigen3::Eigen ALIAS eigen)
   target_include_directories(eigen INTERFACE ${eigen_SOURCE_DIR})
-endif(TARGET Eigen3::Eigen)
+endif(NOT TARGET Eigen3::Eigen)
 
 target_compile_features(${PROJECT_NAME} INTERFACE cxx_std_20)
 target_link_libraries(${PROJECT_NAME} INTERFACE Eigen3::Eigen)
