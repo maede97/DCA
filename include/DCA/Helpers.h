@@ -357,7 +357,7 @@ public:
         VectorXd X;
         solveForX(P, X);
 
-        MatrixXd dXdP;  // size 6
+        MatrixXd dXdP;  // size 2x6
         compute_dXdP(dXdP, P, X);
 
         VectorXd pDpX;  // size 2
@@ -377,18 +377,19 @@ public:
         VectorXd X;
         solveForX(P, X);
 
-        MatrixXd dXdP;
+        MatrixXd dXdP; // size 2x6
         compute_dXdP(dXdP, P, X);
 
-        MatrixXd p2DpX2;
+        MatrixXd p2DpX2; // size 2x2
         objective().compute_d2DdX2(p2DpX2, P, X);
 
-        MatrixXd p2DpP2;
+        MatrixXd p2DpP2; // size 6x6
         objective().compute_d2DdP2(p2DpP2, P, X);
 
-        MatrixXd p2DpXpP;
+        MatrixXd p2DpXpP; // size 2x6
         objective().compute_d2DdXdP(p2DpXpP, P, X);
 
+        // size 6x6
         d2DdP2 = dXdP.transpose() * p2DpX2 * dXdP + dXdP.transpose() * p2DpXpP +
                  p2DpXpP.transpose() * dXdP + p2DpP2;
     }
