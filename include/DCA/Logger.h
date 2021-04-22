@@ -19,27 +19,20 @@ namespace DCA {
 
 class Logger {
 public:
-    void logIt(const std::string& s) {
-        std::cout << s << ANSI_COLOR_DEFAULT << std::endl;
-    }
+    void logIt(const std::string& s);
 };
 
 class LogMessage {
 public:
-    LogMessage(const char* file, const char* function, int line) {
-        os << file << ": " << function << "(" << line << ") ";
-    }
+    LogMessage(const char* file, const char* function, int line);
 
     template <typename T>
-    LogMessage& operator<<(const T& t) {
+    inline LogMessage& operator<<(const T& t) {
         os << t;
         return *this;
     }
 
-    ~LogMessage() {
-        Logger logger;
-        logger.logIt(os.str());
-    }
+    ~LogMessage();
 
 private:
     std::ostringstream os;

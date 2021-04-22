@@ -73,7 +73,7 @@ inline double sigmoid(double x, double scale, double shift = 0.5) {
  */
 class PrimitiveBase {
 public:
-    PrimitiveBase(const VectorXd& parameters) : m_parameters(parameters) {}
+    PrimitiveBase(const VectorXd& parameter) : m_parameter(parameter) {}
     PrimitiveBase() {}
 
     /**
@@ -132,14 +132,14 @@ public:
      * Get the parameters for this primitive.
      * These correspond to ALL degrees of freedom of this primitive.
      */
-    void getParameters(VectorXd& params) const {
-        params = m_parameters;
+    void getParameter(VectorXd& params) const {
+        params = m_parameter;
     }
 
-    unsigned int getParametersSize() const { return m_parameters.size(); } 
+    unsigned int getParametersSize() const { return m_parameter.size(); } 
 
 protected:
-    VectorXd m_parameters;
+    VectorXd m_parameter;
 };
 
 /**

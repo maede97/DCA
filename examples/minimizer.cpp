@@ -6,7 +6,7 @@
  * (c) 2021
  */
 
-#include "DCA/DCA.h"
+#include <DCA/DCA.h>
 
 using namespace DCA;
 

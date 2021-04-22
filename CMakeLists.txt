@@ -22,12 +22,17 @@ option(BUILD_EXAMPLES "Build examples" ON)
 option(USE_COMPACT_N_SEARCH "Build a Pair generator with the help of CompactNSearch" ON)
 option(BUILD_TESTS "Build Tests (FD)" ON)
 
-add_library(${PROJECT_NAME} INTERFACE)
+file(
+    GLOB LIBRARY_SOURCES #
+    "${CMAKE_CURRENT_SOURCE_DIR}/include/${PROJECT_NAME}/*.h" #
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp" #
+)
+add_library(${PROJECT_NAME} ${LIBRARY_SOURCES})
 add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 
 target_include_directories(
   ${PROJECT_NAME}
-  INTERFACE $<BUILD_INTERFACE:${${PROJECT_NAME}_SOURCE_DIR}/include>
+  PUBLIC $<BUILD_INTERFACE:${${PROJECT_NAME}_SOURCE_DIR}/include>
             $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>)
 
 # Check if eigen3 available
@@ -47,12 +52,12 @@ if(NOT TARGET Eigen3::Eigen)
   target_include_directories(eigen INTERFACE ${eigen_SOURCE_DIR})
 endif(NOT TARGET Eigen3::Eigen)
 
-target_compile_features(${PROJECT_NAME} INTERFACE cxx_std_20)
-target_link_libraries(${PROJECT_NAME} INTERFACE Eigen3::Eigen)
+target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_20)
+target_link_libraries(${PROJECT_NAME} PUBLIC Eigen3::Eigen)
 
 if(${USE_COMPACT_N_SEARCH})
 
-  target_compile_definitions(${PROJECT_NAME} INTERFACE -DBUILD_COMPACT_N_SEARCH=1)
+  target_compile_definitions(${PROJECT_NAME} PUBLIC -DBUILD_COMPACT_N_SEARCH=1)
   
   # Now download CompactNSearch (from a fork)
   FetchContent_Declare(
@@ -65,10 +70,10 @@ if(${USE_COMPACT_N_SEARCH})
   fetch(compactnsearch)
   add_subdirectory(${compactnsearch_SOURCE_DIR} CompactNSearch)
   
-  target_link_libraries(${PROJECT_NAME} INTERFACE CompactNSearch)
+  target_link_libraries(${PROJECT_NAME} PUBLIC CompactNSearch)
 
 else(${USE_COMPACT_N_SEARCH})
-  target_compile_definitions(${PROJECT_NAME} INTERFACE -DBUILD_COMPACT_N_SEARCH=0)
+  target_compile_definitions(${PROJECT_NAME} PUBLIC -DBUILD_COMPACT_N_SEARCH=0)
 endif(${USE_COMPACT_N_SEARCH})
 
 if(${BUILD_EXAMPLES})

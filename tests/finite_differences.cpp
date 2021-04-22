@@ -23,14 +23,6 @@ const char* getPrimitiveType(DCA::primitive_t prim) {
         prim);
 }
 
-void getParameters(Eigen::VectorXd& params, const DCA::primitive_t& prim) {
-    std::visit(
-        DCA::overloaded{
-            [&params](const DCA::Sphere& s) { s.getParameters(params); },
-            [&params](const DCA::Capsule& c) { c.getParameters(params); }},
-        prim);
-}
-
 DCA::primitive_t makeNewFromParameters(const DCA::primitive_t& old,
                                        const Eigen::VectorXd& params) {
     const char* name = getPrimitiveType(old);
@@ -113,7 +105,7 @@ void check_dDdP_FD(DCA::primitive_t p1, DCA::primitive_t p2) {
 
     const double change = 0.0001;
     for (int i = 0; i < getParameterSize(p2); i++) {
-        getParameters(params2, p2);
+        getParameter(params2, p2);
 
         // alter the params a bit
         params2(i) += change;
@@ -150,7 +142,7 @@ void check_d2DdP2_FD(DCA::primitive_t p1, DCA::primitive_t p2) {
 
     const double change = 0.0001;
     for (int i = 0; i < getParameterSize(p2); i++) {
-        getParameters(params2, p2);
+        getParameter(params2, p2);
 
         // alter the params a bit
         params2(i) += change;
@@ -185,8 +177,8 @@ void check_d2DdP2_individual_FD(const DCA::Capsule& p1,
         VectorXd P_;
         P_.resize(12);
         VectorXd P1, P2;
-        p2.getParameters(P2);
-        p1.getParameters(P1);
+        p2.getParameter(P2);
+        p1.getParameter(P1);
         P_ << P2, P1;
         return P_;
     }();
@@ -211,7 +203,7 @@ void check_d2DdP2_individual_FD(const DCA::Capsule& p1,
         dXdP_FD.resize(dXdP.rows(), dXdP.cols());
 
         for (int i = 0; i < p2.getParametersSize(); i++) {
-            p2.getParameters(params2);
+            p2.getParameter(params2);
 
             params2(i) += change;
             P_copy.head(6) = params2;
@@ -268,7 +260,7 @@ void check_d2DdP2_individual_FD(const DCA::Capsule& p1,
         for (int i = 0; i < p2.getParametersSize(); i++) {
             VectorXd dDdP1, dDdP2;
 
-            p2.getParameters(params2);
+            p2.getParameter(params2);
 
             params2(i) += change;
             P_copy.head(6) = params2;
@@ -300,7 +292,7 @@ void check_d2DdP2_individual_FD(const DCA::Capsule& p1,
             VectorXd dDdX1, dDdX2;
             VectorXd X_copy;
 
-            p2.getParameters(params2);
+            p2.getParameter(params2);
 
             params2(i) += change;
             P_copy.head(6) = params2;
