@@ -2,14 +2,6 @@
 
 #include <iostream>
 
-#define ANSI_COLOR_RED "\x1b[31m"
-#define ANSI_COLOR_GREEN "\x1b[32m"
-#define ANSI_COLOR_YELLOW "\x1b[33m"
-#define ANSI_COLOR_BLUE "\x1b[34m"
-#define ANSI_COLOR_MAGENTA "\x1b[35m"
-#define ANSI_COLOR_CYAN "\x1b[36m"
-#define ANSI_COLOR_DEFAULT "\x1b[0m"
-
 using Eigen::MatrixXd;
 using Eigen::Vector3d;
 using Eigen::VectorXd;
@@ -46,13 +38,13 @@ DCA::primitive_t makeNewFromParameters(const DCA::primitive_t& old,
     } else if (name == "Capsule") {
         return DCA::Capsule(params);
     }
+    LOG << ANSI_COLOR_RED << "Could not create a new primitive from old.";
     throw std::logic_error("");
 }
 
 void check_dDdP_FD_entries(const VectorXd& dDdP, const VectorXd& dDdP_FD) {
     if (dDdP.size() != dDdP_FD.size()) {
-        std::cout << ANSI_COLOR_RED << "SIZE DOES NOT MATCH!"
-                  << ANSI_COLOR_DEFAULT << std::endl;
+        LOG << ANSI_COLOR_RED << "SIZE DOES NOT MATCH!";
         return;
     }
 
@@ -79,8 +71,7 @@ void check_d2DdP2_FD_entries(const MatrixXd& d2DdP2,
     // Todo: check rows and cols
     if (d2DdP2.rows() != d2DdP2_FD.rows() ||
         d2DdP2.cols() != d2DdP2_FD.cols()) {
-        std::cout << ANSI_COLOR_RED << "SIZE DOES NOT MATCH!"
-                  << ANSI_COLOR_DEFAULT << std::endl;
+        LOG << ANSI_COLOR_RED << "SIZE DOES NOT MATCH!";
         return;
     }
 

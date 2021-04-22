@@ -15,6 +15,7 @@
 #include "Pair.h"
 #include "Primitives.h"
 #include "Utils.h"
+#include "Logger.h"
 
 // And finally implementations of the primitives:
 #include "Capsule.h"
