@@ -73,6 +73,9 @@ inline double sigmoid(double x, double scale, double shift = 0.5) {
  */
 class PrimitiveBase {
 public:
+    PrimitiveBase(const VectorXd& parameters) : m_parameters(parameters) {}
+    PrimitiveBase() {}
+
     /**
      * Compute the distance to another object.
      * @param[in] other The other primitive to check against.
@@ -124,6 +127,19 @@ public:
          * @todo
          */
     }
+
+    /**
+     * Get the parameters for this primitive.
+     * These correspond to ALL degrees of freedom of this primitive.
+     */
+    void getParameters(VectorXd& params) const {
+        params = m_parameters;
+    }
+
+    unsigned int getParametersSize() const { return m_parameters.size(); } 
+
+protected:
+    VectorXd m_parameters;
 };
 
 /**

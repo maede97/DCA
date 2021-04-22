@@ -19,8 +19,8 @@ double Capsule::compute_D(const primitive_t& other) const {
     auto d_capsule = [&](const Capsule& other) -> double {
         // Build P vector
         VectorXd P(12);
-        P << getStartPosition(), getEndPosition(), other.getStartPosition(),
-            other.getEndPosition();
+        P << other.getStartPosition(), other.getEndPosition(),
+            getStartPosition(), getEndPosition();
 
         // Use the CapsuleDistanceHelper to compute the distance
         return CapsuleDistanceHelper::compute_D(P, getRadius(),
@@ -41,8 +41,8 @@ void Capsule::compute_dDdP(VectorXd& dDdP, const primitive_t& other) const {
     auto dDdP_capsule = [&](const Capsule& other) -> void {
         // Build the P vector
         VectorXd P(12);
-        P << getStartPosition(), getEndPosition(), other.getStartPosition(),
-            other.getEndPosition();
+        P << other.getStartPosition(), other.getEndPosition(),
+            getStartPosition(), getEndPosition();
 
         CapsuleDistanceHelper::compute_dDdP(dDdP, P);
     };
@@ -53,7 +53,7 @@ void Capsule::compute_dDdP(VectorXd& dDdP, const primitive_t& other) const {
 
         VectorXd dDdP_full;
         SphereCapsuleDistanceHelper::compute_dDdP(dDdP_full, P);
-        dDdP = dDdP_full.tail(6);
+        dDdP = dDdP_full.head(3);
     };
 
     std::visit(overloaded{dDdP_capsule, dDdP_sphere}, other);
@@ -63,8 +63,8 @@ void Capsule::compute_d2DdP2(MatrixXd& d2DdP2, const primitive_t& other) const {
     auto d2DdP2_capsule = [&](const Capsule& other) -> void {
         // Build the P vector
         VectorXd P(12);
-        P << getStartPosition(), getEndPosition(), other.getStartPosition(),
-            other.getEndPosition();
+        P << other.getStartPosition(), other.getEndPosition(),
+            getStartPosition(), getEndPosition();
 
         CapsuleDistanceHelper::compute_d2DdP2(d2DdP2, P);
     };
@@ -74,7 +74,7 @@ void Capsule::compute_d2DdP2(MatrixXd& d2DdP2, const primitive_t& other) const {
 
         MatrixXd d2DdP2_full;
         SphereCapsuleDistanceHelper::compute_d2DdP2(d2DdP2_full, P);
-        d2DdP2 = d2DdP2_full.block(3, 3, 6, 6);
+        d2DdP2 = d2DdP2_full.block(0, 0, 3, 3);
     };
 
     std::visit(overloaded{d2DdP2_capsule, d2DdP2_sphere}, other);

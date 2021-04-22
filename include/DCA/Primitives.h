@@ -18,8 +18,12 @@ namespace DCA {
  */
 class Sphere : public PrimitiveBase {
 public:
-    Sphere(const Vector3d &position, const double &radius)
-        : m_position(position), m_radius(radius) {}
+    Sphere(const Vector3d &position, const double &radius) : m_radius(radius) {
+        m_parameters.resize(3);
+        m_parameters << position;
+    }
+
+    Sphere(const VectorXd params) : PrimitiveBase(params) {}
 
     double compute_D(const primitive_t &other) const override;
     void compute_dDdP(VectorXd &dDdP, const primitive_t &other) const override;
@@ -29,21 +33,22 @@ public:
                               const primitive_t &other) const override;
 
     // Helpers
-    Vector3d getPosition() const { return m_position; }
+    Vector3d getPosition() const { return m_parameters.head(3); }
     double getRadius() const { return m_radius; }
 
 private:
-    Vector3d m_position;
     double m_radius;
 };
 
 class Capsule : public PrimitiveBase {
 public:
     Capsule(const Vector3d &startPosition, const Vector3d &endPosition,
-            const double &radius)
-        : m_startPosition(startPosition),
-          m_endPosition(endPosition),
-          m_radius(radius) {}
+            const double &radius) : m_radius(radius) {
+        m_parameters.resize(6);
+        m_parameters << startPosition, endPosition;
+    }
+
+    Capsule(const VectorXd params) : PrimitiveBase(params) {}
 
     double compute_D(const primitive_t &other) const override;
     void compute_dDdP(VectorXd &dDdP, const primitive_t &other) const;
@@ -53,13 +58,11 @@ public:
                               const primitive_t &other) const override;
 
     // Helpers
-    Vector3d getStartPosition() const { return m_startPosition; }
-    Vector3d getEndPosition() const { return m_endPosition; }
+    Vector3d getStartPosition() const { return m_parameters.head(3); }
+    Vector3d getEndPosition() const { return m_parameters.tail(3); }
     double getRadius() const { return m_radius; }
 
 private:
-    Vector3d m_startPosition;
-    Vector3d m_endPosition;
     double m_radius;
 };
 

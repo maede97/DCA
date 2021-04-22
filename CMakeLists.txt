@@ -20,6 +20,7 @@ set(CMAKE_CXX_STANDARD 20)
 
 option(BUILD_EXAMPLES "Build examples" ON)
 option(USE_COMPACT_N_SEARCH "Build a Pair generator with the help of CompactNSearch" ON)
+option(BUILD_TESTS "Build Tests (FD)" ON)
 
 add_library(${PROJECT_NAME} INTERFACE)
 add_library(${PROJECT_NAME}::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
@@ -67,13 +68,13 @@ if(${USE_COMPACT_N_SEARCH})
   target_link_libraries(${PROJECT_NAME} INTERFACE CompactNSearch)
 
 else(${USE_COMPACT_N_SEARCH})
-
   target_compile_definitions(${PROJECT_NAME} INTERFACE -DBUILD_COMPACT_N_SEARCH=0)
-
 endif(${USE_COMPACT_N_SEARCH})
 
 if(${BUILD_EXAMPLES})
-
   add_subdirectory(examples)
-
 endif(${BUILD_EXAMPLES})
+
+if(${BUILD_TESTS})
+  add_subdirectory(tests)
+endif(${BUILD_TESTS})
