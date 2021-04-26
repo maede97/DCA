@@ -30,10 +30,15 @@ void compute_dDdP(VectorXd &dDdP, const pair_t &pair,
                   const std::vector<primitive_t> &primitives);
 
 /**
- * Computes the hessian of a given pair and primitives
+ * Computes the hessian of a given pair and primitives.
  */
 void compute_d2DdP2(MatrixXd &d2DdP2, const pair_t &pair,
                     const std::vector<primitive_t> &primitives);
+
+/**
+ * Computes the other hessian of a given pair and primitives.
+ */
+void compute_d2DdP2_other(MatrixXd& d2DdP2_other, const pair_t& pair, const std::vector<primitive_t>& primitives);
 
 /**
  * Get's a vector with all parameters that define a primitive (and that change the derivatives).

@@ -1,5 +1,5 @@
-#include <DCA/Helpers.h>
 #include <DCA/AD_PointToLineSegmentDistance.h>
+#include <DCA/Helpers.h>
 
 namespace DCA {
 
@@ -285,9 +285,9 @@ void CapsuleDistanceHelper::compute_dDdP(VectorXd& dDdP, const VectorXd& P) {
 }
 
 /**
-     * Computes the first derivative of the distance with respect to
-     * the points of the first capsule.
-     */
+ * Computes the first derivative of the distance with respect to
+ * the points of the first capsule.
+ */
 void CapsuleDistanceHelper::compute_d2DdP2(MatrixXd& d2DdP2,
                                            const VectorXd& P) {
     VectorXd X;

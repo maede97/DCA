@@ -32,6 +32,15 @@ void compute_d2DdP2(Eigen::MatrixXd &d2DdP2, const pair_t &pair,
         primitives.at(pair.first), primitives.at(pair.second));
 }
 
+void compute_d2DdP2_other(MatrixXd &d2DdP2_other, const pair_t &pair,
+                          const std::vector<primitive_t> &primitives) {
+    std::visit(
+        [&d2DdP2_other](const auto &cp1, const primitive_t &cp2) {
+            cp1.compute_d2DdP2_other(d2DdP2_other, cp2);
+        },
+        primitives.at(pair.first), primitives.at(pair.second));
+}
+
 void getParameter(VectorXd &parameter, const primitive_t primitive) {
     std::visit(
         overloaded{

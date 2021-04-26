@@ -75,6 +75,29 @@ void Capsule::compute_d2DdP2(MatrixXd& d2DdP2, const primitive_t& other) const {
     std::visit(overloaded{d2DdP2_capsule, d2DdP2_sphere}, other);
 }
 void Capsule::compute_d2DdP2_other(MatrixXd& d2DdP2_other,
-                                   const primitive_t& other) const {}
+                                   const primitive_t& other) const {
+    auto d2DdP2_other_sphere = [&](const Sphere& other) -> void {
+        VectorXd P(9);
+        P << other.getPosition(), getStartPosition(), getEndPosition();
+        MatrixXd d2DdP2_full;
+        SphereCapsuleDistanceHelper::compute_d2DdP2(d2DdP2_full, P);
+        d2DdP2_other = d2DdP2_full.block(0, 3, 3, 6);
+    };
+
+    auto d2DdP2_other_capsule = [&](const Capsule& other) -> void {
+        VectorXd P(12);
+        P << other.getStartPosition(), other.getEndPosition(),
+            getStartPosition(), getEndPosition();
+
+        /**
+         * @todo
+         */
+        //CapsuleDistanceHelper::compute_d2DdP2(d2DdP2_other, P);
+        d2DdP2_other.resize(6,6);
+        d2DdP2_other.setZero();
+    };
+
+    std::visit(overloaded{d2DdP2_other_sphere, d2DdP2_other_capsule}, other);
+}
 
 }  // namespace DCA
